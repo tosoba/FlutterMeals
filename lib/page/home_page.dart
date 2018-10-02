@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_meals/bloc/bloc_provider.dart';
+import 'package:flutter_meals/bloc/latest_meals_bloc.dart';
 import 'package:flutter_meals/bloc/navigation_bloc.dart';
+import 'package:flutter_meals/page/latest_meals_page.dart';
 import 'package:flutter_meals/page/place_holder_page.dart';
 
 class HomePage extends StatelessWidget {
   final List<Widget> _childPages = [
-    PlaceholderWidget(Colors.white),
+    BlocProvider(bloc: LatestMealsBloc(), child: LatestMealsPage()),
     PlaceholderWidget(Colors.deepOrange),
     PlaceholderWidget(Colors.green)
   ];
@@ -15,7 +17,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<NavigationBloc>(context);
     return StreamBuilder(
-        stream: bloc.homePageStream,
+        stream: bloc.homePageIndexStream,
         builder: (context, AsyncSnapshot<int> snapshot) {
           return Scaffold(
             appBar: AppBar(

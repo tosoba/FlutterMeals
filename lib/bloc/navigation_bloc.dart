@@ -4,7 +4,7 @@ import 'package:rxdart/rxdart.dart';
 class NavigationBloc implements BlocBase {
   final _homePageIndexSubject = BehaviorSubject<int>(seedValue: 0);
 
-  Observable<int> get homePageStream => _homePageIndexSubject.stream;
+  Observable<int> get homePageIndexStream => _homePageIndexSubject.stream;
 
   changePage(int index) {
     _homePageIndexSubject.add(index);
