@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_meals/bloc/bloc_provider.dart';
 import 'package:flutter_meals/bloc/navigation_bloc.dart';
 import 'package:flutter_meals/page/place_holder_page.dart';
 
@@ -12,7 +13,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = NavigationProvider.of(context);
+    final bloc = BlocProvider.of<NavigationBloc>(context);
     return StreamBuilder(
         stream: bloc.homePageStream,
         builder: (context, AsyncSnapshot<int> snapshot) {
@@ -20,7 +21,7 @@ class HomePage extends StatelessWidget {
             appBar: AppBar(
               title: Text('FlutterMeals'),
             ),
-            body: _childPages[snapshot.data],
+            body: _childPages[snapshot.hasData ? snapshot.data : 0],
             floatingActionButton: FloatingActionButton.extended(
               onPressed: () {},
               label: Text("Random meal"),
@@ -30,7 +31,7 @@ class HomePage extends StatelessWidget {
               onTap: (index) {
                 bloc.changePage(index);
               },
-              currentIndex: snapshot.data,
+              currentIndex: snapshot.hasData ? snapshot.data : 0,
               items: [
                 BottomNavigationBarItem(
                   icon: Icon(Icons.dashboard),

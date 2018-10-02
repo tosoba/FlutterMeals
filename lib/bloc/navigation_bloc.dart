@@ -1,7 +1,7 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter_meals/bloc/bloc_provider.dart';
 import 'package:rxdart/rxdart.dart';
 
-class NavigationBloc {
+class NavigationBloc implements BlocBase {
   final _homePageIndexSubject = BehaviorSubject<int>(seedValue: 0);
 
   Observable<int> get homePageStream => _homePageIndexSubject.stream;
@@ -12,24 +12,5 @@ class NavigationBloc {
 
   void dispose() {
     _homePageIndexSubject.close();
-  }
-}
-
-class NavigationProvider extends InheritedWidget {
-  final NavigationBloc bloc;
-
-  NavigationProvider({Key key, Widget child})
-      : bloc = NavigationBloc(),
-        super(key: key, child: child);
-
-  static NavigationBloc of(BuildContext context) {
-    return (context.inheritFromWidgetOfExactType(NavigationProvider)
-            as NavigationProvider)
-        .bloc;
-  }
-
-  @override
-  bool updateShouldNotify(InheritedWidget oldWidget) {
-    return true;
   }
 }

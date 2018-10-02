@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_meals/bloc/bloc_provider.dart';
 import 'package:flutter_meals/bloc/navigation_bloc.dart';
 import 'package:flutter_meals/page/home_page.dart';
 
@@ -9,7 +10,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'FlutterMeals',
-      home: NavigationProvider(child: HomePage()),
+      home: BlocProvider(bloc: NavigationBloc(), child: HomePage()),
     );
   }
 }
