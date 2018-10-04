@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_meals/widget/shimmer/shimmer.dart';
 import 'package:flutter_meals/widget/transformer_page/page_transformer.dart';
 import 'package:flutter_meals/widget/transformer_page/transform_page_model.dart';
 import 'package:meta/meta.dart';
@@ -77,16 +79,30 @@ class TransformPageItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var image = Image.network(
-      item.imageUrl,
+    final shimmer = ConstrainedBox(
+        constraints: BoxConstraints.expand(),
+        child: Shimmer.fromColors(
+          baseColor: Colors.lightBlue,
+          highlightColor: Colors.white,
+          child: Card(
+            color: Colors.white,
+          ),
+        ));
+
+    final image = CachedNetworkImage(
       fit: BoxFit.cover,
       alignment: FractionalOffset(
         0.5 + (pageVisibility.pagePosition / 3),
         0.5,
       ),
+      placeholder: shimmer,
+      fadeOutDuration: Duration(milliseconds: 500),
+      imageUrl: item.imageUrl,
+      errorWidget: Icon(Icons.error),
+      fadeInDuration: Duration(milliseconds: 300),
     );
 
-    var imageOverlayGradient = DecoratedBox(
+    final imageOverlayGradient = DecoratedBox(
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: FractionalOffset.bottomCenter,
