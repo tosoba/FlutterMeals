@@ -2,8 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_meals/widget/gradient/linear_gradient_overlay_box.dart';
 import 'package:flutter_meals/widget/shimmer/shimmer_box.dart';
-import 'package:flutter_meals/widget/transformer_page/page_transformer.dart';
-import 'package:flutter_meals/widget/transformer_page/transform_page_model.dart';
+import 'package:flutter_meals/widget/transform_page/page_transformer.dart';
+import 'package:flutter_meals/widget/transform_page/transform_page_model.dart';
 import 'package:meta/meta.dart';
 
 class TransformPageItem extends StatelessWidget {

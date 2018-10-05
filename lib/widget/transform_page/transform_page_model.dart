@@ -1,8 +1,10 @@
+import 'package:meta/meta.dart';
+
 class TransformPageModel {
   TransformPageModel({
-    this.title,
-    this.category,
-    this.imageUrl,
+    @required this.title,
+    @required this.category,
+    @required this.imageUrl,
   });
 
   final String title;
