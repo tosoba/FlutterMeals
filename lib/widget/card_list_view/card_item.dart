@@ -1,14 +1,20 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_meals/model/category.dart';
 import 'package:flutter_meals/widget/gradient/linear_gradient_overlay_box.dart';
 import 'package:flutter_meals/widget/shimmer/shimmer_box.dart';
 
-class CategoryCard extends StatelessWidget {
-  final Category category;
+class CardListViewItemModel {
+  final String imageUrl;
+  final String name;
 
-  CategoryCard(this.category);
+  CardListViewItemModel({this.name, this.imageUrl});
+}
+
+class CardListViewItem extends StatelessWidget {
+  final CardListViewItemModel model;
+
+  const CardListViewItem({Key key, this.model}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +22,7 @@ class CategoryCard extends StatelessWidget {
       fit: BoxFit.scaleDown,
       placeholder: ShimmerExpandBox(),
       fadeOutDuration: Duration(milliseconds: 500),
-      imageUrl: category.thumbnailUrl,
+      imageUrl: model.imageUrl,
       errorWidget: Icon(Icons.error),
       fadeInDuration: Duration(milliseconds: 300),
     );
@@ -37,7 +43,7 @@ class CategoryCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            category.name,
+            model.name,
             style: Theme.of(context)
                 .textTheme
                 .title

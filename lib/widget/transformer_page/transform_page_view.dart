@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_meals/bloc/bloc_provider.dart';
-import 'package:flutter_meals/bloc/latest_meals_bloc.dart';
+import 'package:flutter_meals/bloc/main_pages_bloc.dart';
 import 'package:flutter_meals/model/meal.dart';
 import 'package:flutter_meals/widget/transformer_page//transform_page_item.dart';
 import 'package:flutter_meals/widget/transformer_page/page_transformer.dart';
