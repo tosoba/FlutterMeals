@@ -108,8 +108,8 @@ class TransformPageItem extends StatelessWidget {
           begin: FractionalOffset.bottomCenter,
           end: FractionalOffset.topCenter,
           colors: [
-            const Color(0xFF000000),
-            const Color(0x00000000),
+            Color(0xFF000000),
+            Color(0x00000000),
           ],
         ),
       ),

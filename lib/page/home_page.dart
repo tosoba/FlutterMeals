@@ -3,21 +3,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_meals/bloc/bloc_provider.dart';
 import 'package:flutter_meals/bloc/latest_meals_bloc.dart';
 import 'package:flutter_meals/bloc/navigation_bloc.dart';
+import 'package:flutter_meals/page/categories_page.dart';
 import 'package:flutter_meals/page/latest_meals_page.dart';
 import 'package:flutter_meals/page/place_holder_page.dart';
 
 class HomePage extends StatelessWidget {
-  final List<Widget> _childPages = [
-    BlocProvider(bloc: LatestMealsBloc(), child: LatestMealsPage()),
-    PlaceholderWidget(Colors.deepOrange),
-    PlaceholderWidget(Colors.green)
-  ];
+  final mainPagesBloc = MainPagesBloc();
 
   @override
   Widget build(BuildContext context) {
-    final bloc = BlocProvider.of<NavigationBloc>(context);
+    final navigationBloc = BlocProvider.of<NavigationBloc>(context);
+
+    final List<Widget> _childPages = [
+      BlocProvider(child: LatestMealsPage(), bloc: mainPagesBloc),
+      BlocProvider(child: CategoriesPage(), bloc: mainPagesBloc),
+      PlaceholderWidget(Colors.green)
+    ];
+
     return StreamBuilder(
-        stream: bloc.homePageIndexStream,
+        stream: navigationBloc.homePageIndexStream,
         builder: (context, AsyncSnapshot<int> snapshot) {
           return Scaffold(
             appBar: AppBar(
@@ -31,7 +35,7 @@ class HomePage extends StatelessWidget {
             ),
             bottomNavigationBar: BottomNavigationBar(
               onTap: (index) {
-                bloc.changePage(index);
+                navigationBloc.changePage(index);
               },
               currentIndex: snapshot.hasData ? snapshot.data : 0,
               items: [

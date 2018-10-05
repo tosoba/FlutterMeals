@@ -9,11 +9,11 @@ import 'package:flutter_meals/widget/transformer_page/transform_page_model.dart'
 class TransformPageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final bloc = BlocProvider.of<LatestMealsBloc>(context);
+    final bloc = BlocProvider.of<MainPagesBloc>(context);
     return StreamBuilder(
         stream: bloc.latestMealsStream,
         builder: (context, AsyncSnapshot<List<Meal>> snapshot) {
-          if (!snapshot.hasData) {
+          if (!snapshot.hasData || snapshot.data == null) {
             return Container(
               child: Center(child: CircularProgressIndicator()),
             );
