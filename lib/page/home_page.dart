@@ -8,6 +8,7 @@ import 'package:flutter_meals/page/categories_page.dart';
 import 'package:flutter_meals/page/ingredients_page.dart';
 import 'package:flutter_meals/page/latest_meals_page.dart';
 import 'package:flutter_meals/page/meal_detail_page.dart';
+import 'package:flutter_meals/widget/loading/loading.dart';
 
 class HomePage extends StatelessWidget {
   final mainPagesBloc = MainPagesBloc();
@@ -38,12 +39,29 @@ class HomePage extends StatelessWidget {
 
     return StreamBuilder(
         stream: navigationBloc.homePageIndexStream,
-        builder: (context, AsyncSnapshot<int> snapshot) {
+        builder: (context, AsyncSnapshot<int> pageIndexSnapshot) {
           return Scaffold(
             appBar: AppBar(
               title: Text('FlutterMeals'),
             ),
-            body: _childPages[snapshot.hasData ? snapshot.data : 0],
+            body: StreamBuilder(
+              stream: mainPagesBloc.randomMealLoadingStream,
+              builder:
+                  (context, AsyncSnapshot<bool> randomMealLoadingSnapshot) {
+                return Stack(children: [
+                  _childPages[
+                      pageIndexSnapshot.hasData ? pageIndexSnapshot.data : 0],
+                  (!randomMealLoadingSnapshot.hasData ||
+                          randomMealLoadingSnapshot.data == null ||
+                          randomMealLoadingSnapshot.data == false)
+                      ? Container(
+                          width: 0.0,
+                          height: 0.0,
+                        )
+                      : Loading()
+                ]);
+              },
+            ),
             floatingActionButton: FloatingActionButton.extended(
               onPressed: () {
                 mainPagesBloc.loadRandomMeal();
@@ -55,7 +73,8 @@ class HomePage extends StatelessWidget {
               onTap: (index) {
                 navigationBloc.changePage(index);
               },
-              currentIndex: snapshot.hasData ? snapshot.data : 0,
+              currentIndex:
+                  pageIndexSnapshot.hasData ? pageIndexSnapshot.data : 0,
               items: [
                 BottomNavigationBarItem(
                   icon: Icon(Icons.rss_feed),

@@ -1,9 +1,13 @@
+import 'dart:ui';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_meals/const/text_style.dart';
 import 'package:flutter_meals/model/meal.dart';
 import 'package:flutter_meals/widget/meal_summary/meal_summary.dart';
 import 'package:flutter_meals/widget/separator/separator.dart';
+import 'package:flutter_meals/widget/shimmer/shimmer_box.dart';
 
 class MealDetailPage extends StatelessWidget {
   final Meal meal;
@@ -30,9 +34,13 @@ class MealDetailPage extends StatelessWidget {
 
   Container _getBackground() {
     return Container(
-      child: Image.network(
-        meal.thumbnailUrl,
+      child: CachedNetworkImage(
+        imageUrl: meal.thumbnailUrl,
         fit: BoxFit.cover,
+        placeholder: ShimmerExpandBox(),
+        fadeInDuration: Duration(milliseconds: 300),
+        fadeOutDuration: Duration(milliseconds: 500),
+        errorWidget: Icon(Icons.error),
         height: 300.0,
       ),
       constraints: BoxConstraints.expand(height: 295.0),
@@ -64,20 +72,28 @@ class MealDetailPage extends StatelessWidget {
             meal,
             horizontal: false,
           ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 32.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  "INSTRUCTIONS",
-                  style: Style.headerTextStyleBlack,
+          BackdropFilter(
+            filter: ImageFilter.blur(
+              sigmaX: 10.0,
+              sigmaY: 10.0,
+            ),
+            child: Container(
+              child: Padding(
+                padding: EdgeInsets.all(20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      "INSTRUCTIONS",
+                      style: Style.headerTextStyleBlack,
+                    ),
+                    Separator(
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    Text(meal.instructions, style: Style.commonTextStyleBlack),
+                  ],
                 ),
-                Separator(
-                  color: Theme.of(context).primaryColor,
-                ),
-                Text(meal.instructions, style: Style.commonTextStyleBlack),
-              ],
+              ),
             ),
           ),
         ],
@@ -88,7 +104,31 @@ class MealDetailPage extends StatelessWidget {
   Container _getToolbar(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-      child: BackButton(color: Colors.white),
+      child: Material(
+          color: Colors.transparent,
+          child: Ink(
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.white),
+              color: Theme.of(context).primaryColor.withOpacity(.85),
+              shape: BoxShape.circle,
+            ),
+            child: InkWell(
+              //This keeps the splash effect within the circle
+              borderRadius: BorderRadius.circular(1000.0),
+              //Something large to ensure a circle
+              onTap: () {
+                Navigator.maybePop(context);
+              },
+              child: Padding(
+                padding: EdgeInsets.all(5.0),
+                child: Icon(
+                  Icons.arrow_back,
+                  size: 30.0,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          )),
     );
   }
 }

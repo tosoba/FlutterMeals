@@ -10,7 +10,7 @@ class Style {
   static final commonTextStyleBlack =
       commonTextStyle.copyWith(color: Colors.black45);
   static final titleTextStyle = baseTextStyle.copyWith(
-      color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.w600);
+      color: Colors.white, fontSize: 24.0, fontWeight: FontWeight.w600);
   static final headerTextStyle = baseTextStyle.copyWith(
       color: Colors.white, fontSize: 22.0, fontWeight: FontWeight.w400);
   static final headerTextStyleBlack =

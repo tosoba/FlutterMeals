@@ -23,6 +23,10 @@ class MealSummary extends StatelessWidget {
     }
 
     final mealCardContent = Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.white),
+        shape: BoxShape.rectangle,
+      ),
       margin: EdgeInsets.fromLTRB(
           horizontal ? 76.0 : 16.0, horizontal ? 16.0 : 16.0, 16.0, 16.0),
       constraints: BoxConstraints.expand(),
@@ -78,15 +82,9 @@ class MealSummary extends StatelessWidget {
       margin:
           horizontal ? EdgeInsets.only(left: 46.0) : EdgeInsets.only(top: 72.0),
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
+        color: Theme.of(context).primaryColor.withOpacity(.85),
         shape: BoxShape.rectangle,
         borderRadius: BorderRadius.circular(8.0),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-            blurRadius: 10.0,
-            offset: Offset(0.0, 10.0),
-          ),
-        ],
       ),
     );
 
