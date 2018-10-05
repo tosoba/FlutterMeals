@@ -14,13 +14,11 @@ class MealSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget _mealValue({String value, Widget widget}) {
+    Widget _mealDetailWidget({String value, Icon icon, Widget widget}) {
       return Container(
-        child: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-          widget,
-          Container(width: 8.0),
-          Text(meal.category, style: Style.smallTextStyle),
-        ]),
+        child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[icon, Container(width: 8.0), widget]),
       );
     }
 
@@ -43,15 +41,31 @@ class MealSummary extends StatelessWidget {
             children: <Widget>[
               Expanded(
                   flex: horizontal ? 1 : 0,
-                  child:
-                      _mealValue(value: meal.cuisine, widget: Icon(Icons.map))),
+                  child: _mealDetailWidget(
+                    value: meal.cuisine,
+                    icon: Icon(Icons.book),
+                    widget: new InkWell(
+                        child: new Text(
+                          'Source',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onTap: () {}),
+                  )),
               Container(
                 width: 32.0,
               ),
               Expanded(
                   flex: horizontal ? 1 : 0,
-                  child:
-                      _mealValue(value: meal.cuisine, widget: Icon(Icons.map)))
+                  child: _mealDetailWidget(
+                    value: meal.cuisine,
+                    icon: Icon(Icons.video_label),
+                    widget: new InkWell(
+                        child: new Text(
+                          'Video',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onTap: () {}),
+                  ))
             ],
           ),
         ],
@@ -64,7 +78,7 @@ class MealSummary extends StatelessWidget {
       margin:
           horizontal ? EdgeInsets.only(left: 46.0) : EdgeInsets.only(top: 72.0),
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColorDark,
+        color: Theme.of(context).primaryColor,
         shape: BoxShape.rectangle,
         borderRadius: BorderRadius.circular(8.0),
         boxShadow: <BoxShadow>[

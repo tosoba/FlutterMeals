@@ -15,12 +15,12 @@ class MealDetailPage extends StatelessWidget {
     return Scaffold(
       body: Container(
         constraints: BoxConstraints.expand(),
-        color: Theme.of(context).primaryColor,
+        color: Colors.white,
         child: Stack(
           children: <Widget>[
             _getBackground(),
-            _getGradient(context),
-            _getContent(),
+            _getGradient(),
+            _getContent(context),
             _getToolbar(context),
           ],
         ),
@@ -39,8 +39,8 @@ class MealDetailPage extends StatelessWidget {
     );
   }
 
-  Container _getGradient(BuildContext context) {
-    final color = Theme.of(context).primaryColor;
+  Container _getGradient() {
+    final color = Colors.white;
     return Container(
       margin: EdgeInsets.only(top: 190.0),
       height: 110.0,
@@ -55,7 +55,7 @@ class MealDetailPage extends StatelessWidget {
     );
   }
 
-  Container _getContent() {
+  Container _getContent(BuildContext context) {
     return Container(
       child: ListView(
         padding: EdgeInsets.fromLTRB(0.0, 72.0, 0.0, 32.0),
@@ -71,10 +71,12 @@ class MealDetailPage extends StatelessWidget {
               children: <Widget>[
                 Text(
                   "INSTRUCTIONS",
-                  style: Style.headerTextStyle,
+                  style: Style.headerTextStyleBlack,
                 ),
-                Separator(),
-                Text(meal.instructions, style: Style.commonTextStyle),
+                Separator(
+                  color: Theme.of(context).primaryColor,
+                ),
+                Text(meal.instructions, style: Style.commonTextStyleBlack),
               ],
             ),
           ),
