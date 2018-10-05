@@ -2,7 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_meals/model/category.dart';
-import 'package:flutter_meals/widget/shimmer/shimmer.dart';
+import 'package:flutter_meals/widget/gradient/linear_gradient_overlay_box.dart';
+import 'package:flutter_meals/widget/shimmer/shimmer_box.dart';
 
 class CategoryCard extends StatelessWidget {
   final Category category;
@@ -11,33 +12,22 @@ class CategoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final shimmer = SizedBox.expand(
-        child: Shimmer.fromColors(
-            baseColor: Colors.lightBlue,
-            highlightColor: Colors.white,
-            child: SizedBox.expand()));
-
     final image = CachedNetworkImage(
       fit: BoxFit.scaleDown,
-      placeholder: shimmer,
+      placeholder: ShimmerExpandBox(),
       fadeOutDuration: Duration(milliseconds: 500),
       imageUrl: category.thumbnailUrl,
       errorWidget: Icon(Icons.error),
       fadeInDuration: Duration(milliseconds: 300),
     );
 
-    final imageOverlayGradient = DecoratedBox(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: FractionalOffset.bottomCenter,
-          end: FractionalOffset.center,
-          colors: [
-            Color(0xFF606060),
-            Color(0x00606060),
-          ],
-        ),
-      ),
-    );
+    final imageOverlayGradient = LinearGradientOverlayBox(
+        beginOffset: FractionalOffset.bottomCenter,
+        endOffset: FractionalOffset.center,
+        colors: [
+          Color(0xFF606060),
+          Color(0x00606060),
+        ]);
 
     final text = Positioned(
       bottom: 25.0,

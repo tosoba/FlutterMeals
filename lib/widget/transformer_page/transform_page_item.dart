@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_meals/widget/shimmer/shimmer.dart';
+import 'package:flutter_meals/widget/gradient/linear_gradient_overlay_box.dart';
+import 'package:flutter_meals/widget/shimmer/shimmer_box.dart';
 import 'package:flutter_meals/widget/transformer_page/page_transformer.dart';
 import 'package:flutter_meals/widget/transformer_page/transform_page_model.dart';
 import 'package:meta/meta.dart';
@@ -79,40 +80,24 @@ class TransformPageItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final shimmer = ConstrainedBox(
-        constraints: BoxConstraints.expand(),
-        child: Shimmer.fromColors(
-          baseColor: Colors.lightBlue,
-          highlightColor: Colors.white,
-          child: Card(
-            color: Colors.white,
-          ),
-        ));
-
     final image = CachedNetworkImage(
       fit: BoxFit.cover,
       alignment: FractionalOffset(
         0.5 + (pageVisibility.pagePosition / 3),
         0.5,
       ),
-      placeholder: shimmer,
+      placeholder: ShimmerExpandBox(),
       fadeOutDuration: Duration(milliseconds: 500),
       imageUrl: item.imageUrl,
       errorWidget: Icon(Icons.error),
       fadeInDuration: Duration(milliseconds: 300),
     );
 
-    final imageOverlayGradient = DecoratedBox(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: FractionalOffset.bottomCenter,
-          end: FractionalOffset.topCenter,
-          colors: [
-            Color(0xFF000000),
-            Color(0x00000000),
-          ],
-        ),
-      ),
+    final imageOverlayGradient = LinearGradientOverlayBox(
+      colors: [
+        Color(0xFF000000),
+        Color(0x00000000),
+      ],
     );
 
     return Padding(
