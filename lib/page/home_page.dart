@@ -3,12 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_meals/bloc/bloc_provider.dart';
 import 'package:flutter_meals/bloc/main_pages_bloc.dart';
 import 'package:flutter_meals/bloc/navigation_bloc.dart';
+import 'package:flutter_meals/model/meal.dart';
 import 'package:flutter_meals/page/categories_page.dart';
 import 'package:flutter_meals/page/ingredients_page.dart';
 import 'package:flutter_meals/page/latest_meals_page.dart';
+import 'package:flutter_meals/page/meal_detail_page.dart';
 
 class HomePage extends StatelessWidget {
   final mainPagesBloc = MainPagesBloc();
+
+  void _goToMealDetails(BuildContext context, Meal meal) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => MealDetailPage(meal)),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +32,10 @@ class HomePage extends StatelessWidget {
       )
     ];
 
+    mainPagesBloc.selectedMealStream.forEach((meal) {
+      _goToMealDetails(context, meal);
+    });
+
     return StreamBuilder(
         stream: navigationBloc.homePageIndexStream,
         builder: (context, AsyncSnapshot<int> snapshot) {
@@ -32,7 +45,9 @@ class HomePage extends StatelessWidget {
             ),
             body: _childPages[snapshot.hasData ? snapshot.data : 0],
             floatingActionButton: FloatingActionButton.extended(
-              onPressed: () {},
+              onPressed: () {
+                mainPagesBloc.loadRandomMeal();
+              },
               label: Text("Random meal"),
               icon: Icon(Icons.restaurant_menu),
             ),

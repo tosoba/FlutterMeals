@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_meals/bloc/bloc_provider.dart';
 import 'package:flutter_meals/bloc/main_pages_bloc.dart';
 import 'package:flutter_meals/model/meal.dart';
-import 'package:flutter_meals/page/meal_detail_page.dart';
 import 'package:flutter_meals/widget/transform_page//transform_page_view.dart';
 import 'package:flutter_meals/widget/transform_page/transform_page_model.dart';
 
@@ -24,11 +23,7 @@ class LatestMealsPage extends StatelessWidget {
             child: TransformPageView(
           onItemTap: (int index) {
             final meal = snapshot.data[index];
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => MealDetailPage(meal)),
-            );
-            return;
+            bloc.selectedMealSink.add(meal);
           },
           items: snapshot.data
               .map((meal) => TransformPageModel(

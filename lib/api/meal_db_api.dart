@@ -38,6 +38,15 @@ class MealDbApi {
             Ingredient.fromJson(ingredientJson as Map<String, dynamic>))
         .toList();
   }
+
+  Future<Meal> getRandomMeal() async {
+    final url = "${_baseUrl}random.php";
+    final response = await http.get(url);
+    final meals = json.decode(response.body)["meals"] as List<dynamic>;
+    return meals
+        .map((mealJson) => Meal.fromJson(mealJson as Map<String, dynamic>))
+        .toList()[0];
+  }
 }
 
 final api = MealDbApi();

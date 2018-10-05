@@ -9,6 +9,7 @@ class MainPagesBloc extends BlocBase {
   final _latestMealsSubject = BehaviorSubject<List<Meal>>();
   final _categoriesSubject = BehaviorSubject<List<Category>>();
   final _ingredientsSubject = BehaviorSubject<List<Ingredient>>();
+  final _selectedMealSubject = PublishSubject<Meal>();
 
   Observable<List<Meal>> get latestMealsStream => _latestMealsSubject.stream;
 
@@ -16,6 +17,10 @@ class MainPagesBloc extends BlocBase {
 
   Observable<List<Ingredient>> get ingredientsStream =>
       _ingredientsSubject.stream;
+
+  Observable<Meal> get selectedMealStream => _selectedMealSubject.stream;
+
+  Sink<Meal> get selectedMealSink => _selectedMealSubject.sink;
 
   MainPagesBloc() {
     load();
@@ -31,9 +36,14 @@ class MainPagesBloc extends BlocBase {
         .then((ingredients) => _ingredientsSubject.add(ingredients));
   }
 
+  loadRandomMeal() {
+    api.getRandomMeal().then((meal) => _selectedMealSubject.add(meal));
+  }
+
   void dispose() {
     _latestMealsSubject.close();
     _categoriesSubject.close();
     _ingredientsSubject.close();
+    _selectedMealSubject.close();
   }
 }
