@@ -7,13 +7,13 @@ import 'package:flutter_meals/widget/transform_page/transform_page_model.dart';
 import 'package:meta/meta.dart';
 
 class TransformPageItem extends StatelessWidget {
-  TransformPageItem({
-    @required this.item,
-    @required this.pageVisibility,
-  });
+  TransformPageItem(
+      {@required this.item, @required this.pageVisibility, this.onTap});
 
   final TransformPageModel item;
   final PageVisibility pageVisibility;
+
+  final GestureTapCallback onTap;
 
   Widget _applyTextEffects({
     @required double translationFactor,
@@ -100,7 +100,7 @@ class TransformPageItem extends StatelessWidget {
       ],
     );
 
-    return Padding(
+    final widget = Padding(
       padding: const EdgeInsets.symmetric(
         vertical: 16.0,
         horizontal: 8.0,
@@ -118,5 +118,12 @@ class TransformPageItem extends StatelessWidget {
         ),
       ),
     );
+
+    return onTap == null
+        ? widget
+        : GestureDetector(
+            child: widget,
+            onTap: onTap,
+          );
   }
 }

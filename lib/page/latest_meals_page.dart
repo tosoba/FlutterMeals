@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_meals/bloc/bloc_provider.dart';
 import 'package:flutter_meals/bloc/main_pages_bloc.dart';
 import 'package:flutter_meals/model/meal.dart';
+import 'package:flutter_meals/page/meal_detail_page.dart';
 import 'package:flutter_meals/widget/transform_page//transform_page_view.dart';
 import 'package:flutter_meals/widget/transform_page/transform_page_model.dart';
 
@@ -10,6 +11,7 @@ class LatestMealsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<MainPagesBloc>(context);
+
     return StreamBuilder(
       stream: bloc.latestMealsStream,
       builder: (context, AsyncSnapshot<List<Meal>> snapshot) {
@@ -20,6 +22,14 @@ class LatestMealsPage extends StatelessWidget {
         }
         return Container(
             child: TransformPageView(
+          onItemTap: (int index) {
+            final meal = snapshot.data[index];
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MealDetailPage(meal)),
+            );
+            return;
+          },
           items: snapshot.data
               .map((meal) => TransformPageModel(
                   title: meal.name,
