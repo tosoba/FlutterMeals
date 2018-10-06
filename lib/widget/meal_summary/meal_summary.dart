@@ -36,7 +36,12 @@ class MealSummary extends StatelessWidget {
             horizontal ? CrossAxisAlignment.start : CrossAxisAlignment.center,
         children: <Widget>[
           Container(height: 4.0),
-          Text(meal.name, style: Style.titleTextStyle),
+          Text(
+            meal.name,
+            style: Style.titleTextStyle,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
           Container(height: 10.0),
           Text(meal.cuisine, style: Style.commonTextStyle),
           Separator(),
@@ -52,6 +57,8 @@ class MealSummary extends StatelessWidget {
                         child: new Text(
                           'Source',
                           style: TextStyle(color: Colors.white),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                         onTap: () {}),
                   )),
@@ -67,6 +74,8 @@ class MealSummary extends StatelessWidget {
                         child: new Text(
                           'Video',
                           style: TextStyle(color: Colors.white),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                         onTap: () {}),
                   ))

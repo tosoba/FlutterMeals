@@ -8,6 +8,7 @@ import 'package:flutter_meals/page/categories_page.dart';
 import 'package:flutter_meals/page/ingredients_page.dart';
 import 'package:flutter_meals/page/latest_meals_page.dart';
 import 'package:flutter_meals/page/meal_detail_page.dart';
+import 'package:flutter_meals/page/search_page.dart';
 import 'package:flutter_meals/widget/loading/loading.dart';
 
 class HomePage extends StatelessWidget {
@@ -18,6 +19,11 @@ class HomePage extends StatelessWidget {
       context,
       MaterialPageRoute(builder: (context) => MealDetailPage(meal)),
     );
+  }
+
+  void _goToSearch(BuildContext context) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => SearchPage()));
   }
 
   @override
@@ -43,6 +49,14 @@ class HomePage extends StatelessWidget {
           return Scaffold(
             appBar: AppBar(
               title: Text('FlutterMeals'),
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.search),
+                  onPressed: () {
+                    _goToSearch(context);
+                  },
+                ),
+              ],
             ),
             body: StreamBuilder(
               stream: mainPagesBloc.randomMealLoadingStream,
