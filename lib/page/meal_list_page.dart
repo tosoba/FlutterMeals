@@ -4,6 +4,7 @@ import 'package:flutter_meals/bloc/child_page_bloc.dart';
 import 'package:flutter_meals/const/text_style.dart';
 import 'package:flutter_meals/model/meal.dart';
 import 'package:flutter_meals/page/meal_detail_page.dart';
+import 'package:flutter_meals/widget/loading/snapshot_loading_widget.dart';
 import 'package:flutter_meals/widget/search_bar/search_bar_with_back_button.dart';
 import 'package:flutter_meals/widget/sorted_meal_list/sorted_meal_list.dart';
 
@@ -57,26 +58,35 @@ class MealListPageState extends State<MealListPage> {
                 controller: controller,
               ),
               Expanded(
-                  child: (widget.meals == null || widget.meals.length == 0)
-                      ? Center(
-                          child: Text(
-                            "No meals found.",
-                            style: Style.headerTextStyleBlack,
-                          ),
-                        )
-                      : SortedMealList(
-                          onItemTap: (mealName) => childBloc.selectedMealSink
-                              .add(widget.meals
-                                  .firstWhere((meal) => meal.name == mealName)),
-                          meals: widget.meals
-                              .where((meal) => _filter.isNotEmpty
-                                  ? meal.name
-                                      .toLowerCase()
-                                      .contains(_filter.toLowerCase())
-                                  : true)
-                              .toList(),
-                          sortString: controller.text,
-                        )),
+                child: StreamBuilder(
+                    stream: childBloc.loadingStream,
+                    builder: (context, AsyncSnapshot<bool> snapshot) {
+                      return Stack(children: <Widget>[
+                        (widget.meals == null || widget.meals.length == 0)
+                            ? Center(
+                                child: Text(
+                                  "No meals found.",
+                                  style: Style.headerTextStyleBlack,
+                                ),
+                              )
+                            : SortedMealList(
+                                onItemTap: (mealName) => childBloc
+                                    .selectedMealSink
+                                    .add(widget.meals.firstWhere(
+                                        (meal) => meal.name == mealName)),
+                                meals: widget.meals
+                                    .where((meal) => _filter.isNotEmpty
+                                        ? meal.name
+                                            .toLowerCase()
+                                            .contains(_filter.toLowerCase())
+                                        : true)
+                                    .toList(),
+                                sortString: controller.text,
+                              ),
+                        SnapshotLoadingWidget(loadingSnapshot: snapshot)
+                      ]);
+                    }),
+              ),
             ],
           ),
         ),

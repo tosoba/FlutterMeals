@@ -1,3 +1,4 @@
+import 'package:async/async.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_meals/bloc/bloc_provider.dart';
@@ -90,7 +91,8 @@ class SearchPageState extends State<SearchPage> {
                           );
                         }),
                     StreamBuilder(
-                      stream: searchBloc.loadingStream,
+                      stream: StreamGroup.merge(
+                          [childBloc.loadingStream, searchBloc.loadingStream]),
                       builder: (context, AsyncSnapshot<bool> loadingSnapshot) {
                         return SnapshotLoadingWidget(
                           loadingSnapshot: loadingSnapshot,
