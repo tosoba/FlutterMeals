@@ -4,6 +4,7 @@ import 'package:flutter_meals/bloc/bloc_provider.dart';
 import 'package:flutter_meals/bloc/search_bloc.dart';
 import 'package:flutter_meals/const/text_style.dart';
 import 'package:flutter_meals/model/meal.dart';
+import 'package:flutter_meals/page/meal_detail_page.dart';
 import 'package:flutter_meals/widget/loading/snapshot_loading_widget.dart';
 import 'package:flutter_meals/widget/search_bar/search_bar_with_back_button.dart';
 import 'package:flutter_meals/widget/sorted_meal_list/sorted_meal_list.dart';
@@ -18,6 +19,13 @@ class SearchPage extends StatefulWidget {
 class SearchPageState extends State<SearchPage> {
   final TextEditingController controller = TextEditingController();
   String _lastSearch = "";
+
+  _goToMealDetails(BuildContext context, Meal meal) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => MealDetailPage(meal)),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +72,8 @@ class SearchPageState extends State<SearchPage> {
                             );
                           }
                           return SortedMealList(
+                            onItemTap: (index) => _goToMealDetails(
+                                context, foundMealsSnapshot.data[index]),
                             meals: foundMealsSnapshot.data,
                             sortString: _lastSearch,
                           );

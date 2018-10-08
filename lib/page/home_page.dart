@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_meals/bloc/bloc_provider.dart';
+import 'package:flutter_meals/bloc/home_navigation_bloc.dart';
 import 'package:flutter_meals/bloc/main_pages_bloc.dart';
-import 'package:flutter_meals/bloc/navigation_bloc.dart';
 import 'package:flutter_meals/bloc/search_bloc.dart';
 import 'package:flutter_meals/model/meal.dart';
 import 'package:flutter_meals/page/categories_page.dart';
@@ -27,26 +27,18 @@ class HomePage extends StatelessWidget {
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => BlocProvider(
-                child: SearchPage(),
-                bloc: SearchBloc(),
-              ),
+          builder: (_) => BlocProvider(child: SearchPage(), bloc: SearchBloc()),
         ));
   }
 
   _goToMealList(BuildContext context, List<Meal> meals) {
     Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => MealListPage(
-                meals: meals,
-              ),
-        ));
+        context, MaterialPageRoute(builder: (_) => MealListPage(meals: meals)));
   }
 
   @override
   Widget build(BuildContext context) {
-    final navigationBloc = BlocProvider.of<NavigationBloc>(context);
+    final navigationBloc = BlocProvider.of<HomeNavigationBloc>(context);
 
     final List<Widget> _childPages = [
       BlocProvider(child: LatestMealsPage(), bloc: mainPagesBloc),
@@ -57,7 +49,7 @@ class HomePage extends StatelessWidget {
       )
     ];
 
-    mainPagesBloc.selectedMealStream
+    mainPagesBloc.randomMealStream
         .forEach((meal) => _goToMealDetails(context, meal));
 
     mainPagesBloc.foundMealsStream

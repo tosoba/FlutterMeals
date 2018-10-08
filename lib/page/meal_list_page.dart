@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_meals/const/text_style.dart';
 import 'package:flutter_meals/model/meal.dart';
+import 'package:flutter_meals/page/meal_detail_page.dart';
 import 'package:flutter_meals/widget/search_bar/search_bar_with_back_button.dart';
 import 'package:flutter_meals/widget/sorted_meal_list/sorted_meal_list.dart';
 
@@ -20,10 +21,19 @@ class MealListPageState extends State<MealListPage> {
   final TextEditingController controller = TextEditingController();
   String _filter = "";
 
+  _goToMealDetails(BuildContext context, Meal meal) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => MealDetailPage(meal)),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     controller.addListener(() {
-      _filter = controller.text;
+      setState(() {
+        _filter = controller.text;
+      });
     });
 
     return Scaffold(
@@ -45,6 +55,8 @@ class MealListPageState extends State<MealListPage> {
                           ),
                         )
                       : SortedMealList(
+                          onItemTap: (index) =>
+                              _goToMealDetails(context, widget.meals[index]),
                           meals: widget.meals
                               .where((meal) => _filter.isNotEmpty
                                   ? meal.name
