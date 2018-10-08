@@ -50,7 +50,7 @@ class MainPagesBloc extends BlocBase {
         .getIngredients()
         .then((ingredients) => _ingredientsSubject.add(ingredients));
 
-    _selectedCategorySubject.forEach((category) {
+    _selectedCategorySubject.listen((category) {
       _loadingSubject.add(true);
       MealDbApi.instance.findMealsByCategory(category).then((meals) {
         _loadingSubject.add(false);
@@ -58,7 +58,7 @@ class MainPagesBloc extends BlocBase {
       });
     });
 
-    _selectedIngredientSubject.forEach((ingredient) {
+    _selectedIngredientSubject.listen((ingredient) {
       _loadingSubject.add(true);
       MealDbApi.instance.findMealsByIngredient(ingredient).then((meals) {
         _loadingSubject.add(false);
@@ -75,6 +75,7 @@ class MainPagesBloc extends BlocBase {
     });
   }
 
+  @override
   dispose() {
     _latestMealsSubject.close();
     _categoriesSubject.close();

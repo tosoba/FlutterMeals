@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_meals/bloc/bloc_provider.dart';
+import 'package:flutter_meals/bloc/child_page_bloc.dart';
 import 'package:flutter_meals/bloc/search_bloc.dart';
 import 'package:flutter_meals/const/text_style.dart';
 import 'package:flutter_meals/model/meal.dart';
@@ -19,6 +20,8 @@ class SearchPage extends StatefulWidget {
 class SearchPageState extends State<SearchPage> {
   final TextEditingController controller = TextEditingController();
   String _lastSearch = "";
+  final childBloc = ChildPageBloc();
+  bool _didSubscribe = false;
 
   _goToMealDetails(BuildContext context, Meal meal) {
     Navigator.push(
@@ -30,6 +33,13 @@ class SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     final searchBloc = BlocProvider.of<SearchBloc>(context);
+
+    if (!_didSubscribe) {
+      childBloc.foundMealStream
+          .distinct((previous, next) => previous.id == next.id)
+          .listen((meal) => _goToMealDetails(context, meal));
+      _didSubscribe = true;
+    }
 
     controller.addListener(() {
       if (controller.text != null && controller.text.isNotEmpty) {
@@ -72,9 +82,8 @@ class SearchPageState extends State<SearchPage> {
                             );
                           }
                           return SortedMealList(
-                            onItemTap: (mealName) => _goToMealDetails(
-                                context,
-                                foundMealsSnapshot.data.firstWhere(
+                            onItemTap: (mealName) => childBloc.selectedMealSink
+                                .add(foundMealsSnapshot.data.firstWhere(
                                     (meal) => meal.name == mealName)),
                             meals: foundMealsSnapshot.data,
                             sortString: _lastSearch,

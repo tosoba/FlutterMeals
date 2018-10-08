@@ -39,6 +39,11 @@ class MealDbApi {
         await _getListFromUrl("${_baseUrl}random.php", "meals"))[0];
   }
 
+  Future<Meal> getMealById(String id) async {
+    return _mapToListOfMeals(
+        await _getListFromUrl("${_baseUrl}lookup.php?i=$id", "meals"))[0];
+  }
+
   Future<List<Meal>> searchMeals(String searchTerm) async {
     return _mapToListOfMeals(
         await _getListFromUrl("${_baseUrl}search.php?s=$searchTerm", "meals"));

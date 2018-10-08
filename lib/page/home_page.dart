@@ -27,13 +27,13 @@ class HomePage extends StatelessWidget {
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => BlocProvider(child: SearchPage(), bloc: SearchBloc()),
-        ));
+            builder: (context) =>
+                BlocProvider(child: SearchPage(), bloc: SearchBloc())));
   }
 
   _goToMealList(BuildContext context, List<Meal> meals) {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (_) => MealListPage(meals: meals)));
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => MealListPage(meals: meals)));
   }
 
   @override
@@ -50,10 +50,10 @@ class HomePage extends StatelessWidget {
     ];
 
     mainPagesBloc.randomMealStream
-        .forEach((meal) => _goToMealDetails(context, meal));
+        .listen((meal) => _goToMealDetails(context, meal));
 
     mainPagesBloc.foundMealsStream
-        .forEach((meals) => _goToMealList(context, meals));
+        .listen((meals) => _goToMealList(context, meals));
 
     return StreamBuilder(
         stream: navigationBloc.homePageIndexStream,

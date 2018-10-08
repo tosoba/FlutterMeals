@@ -20,7 +20,7 @@ class SearchBloc extends BlocBase {
     _searchSubject
         .debounce(Duration(milliseconds: 500))
         .distinct()
-        .forEach((searchTerm) {
+        .listen((searchTerm) {
       if (!disposed) _loadingSubject.add(true);
       MealDbApi.instance.searchMeals(searchTerm).then((meals) {
         if (!disposed) {

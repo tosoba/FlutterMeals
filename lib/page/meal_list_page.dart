@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_meals/bloc/child_page_bloc.dart';
 import 'package:flutter_meals/const/text_style.dart';
 import 'package:flutter_meals/model/meal.dart';
 import 'package:flutter_meals/page/meal_detail_page.dart';
@@ -13,23 +14,32 @@ class MealListPage extends StatefulWidget {
 
   @override
   MealListPageState createState() {
-    return new MealListPageState();
+    return MealListPageState();
   }
 }
 
 class MealListPageState extends State<MealListPage> {
   final TextEditingController controller = TextEditingController();
   String _filter = "";
+  final childBloc = ChildPageBloc();
+  bool _didSubscribe = false;
 
-  _goToMealDetails(BuildContext context, Meal meal) {
+  _goToMealDetails(Meal meal) {
     Navigator.push(
-      context,
+      this.context,
       MaterialPageRoute(builder: (context) => MealDetailPage(meal)),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    if (!_didSubscribe) {
+      childBloc.foundMealStream.listen((meal) {
+        _goToMealDetails(meal);
+      });
+      _didSubscribe = true;
+    }
+
     controller.addListener(() {
       setState(() {
         _filter = controller.text;
@@ -55,9 +65,8 @@ class MealListPageState extends State<MealListPage> {
                           ),
                         )
                       : SortedMealList(
-                          onItemTap: (mealName) => _goToMealDetails(
-                              context,
-                              widget.meals
+                          onItemTap: (mealName) => childBloc.selectedMealSink
+                              .add(widget.meals
                                   .firstWhere((meal) => meal.name == mealName)),
                           meals: widget.meals
                               .where((meal) => _filter.isNotEmpty
