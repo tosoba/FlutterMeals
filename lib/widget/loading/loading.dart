@@ -6,8 +6,8 @@ class Loading extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        width: 100.0,
-        height: 100.0,
+        width: 80.0,
+        height: 80.0,
         color: Colors.white.withOpacity(.8),
         foregroundDecoration: BoxDecoration(
             border:

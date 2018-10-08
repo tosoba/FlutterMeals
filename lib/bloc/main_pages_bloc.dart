@@ -31,18 +31,20 @@ class MainPagesBloc extends BlocBase {
   }
 
   load() {
-    api.getLatestMeals().then((meals) => _latestMealsSubject.add(meals));
-    api
+    MealDbApi.instance
+        .getLatestMeals()
+        .then((meals) => _latestMealsSubject.add(meals));
+    MealDbApi.instance
         .getCategories()
         .then((categories) => _categoriesSubject.add(categories));
-    api
+    MealDbApi.instance
         .getIngredients()
         .then((ingredients) => _ingredientsSubject.add(ingredients));
   }
 
   loadRandomMeal() {
     _randomMealLoadingSubject.add(true);
-    api.getRandomMeal().then((meal) {
+    MealDbApi.instance.getRandomMeal().then((meal) {
       _randomMealLoadingSubject.add(false);
       _selectedMealSubject.add(meal);
     });

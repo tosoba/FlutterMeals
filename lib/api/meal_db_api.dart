@@ -9,6 +9,8 @@ import 'package:http/http.dart' as http;
 class MealDbApi {
   static const _baseUrl = "https://www.themealdb.com/api/json/v1/1/";
 
+  static final instance = MealDbApi();
+
   Future<List<Meal>> getLatestMeals() async {
     final url = "${_baseUrl}latest.php";
     final response = await http.get(url);
@@ -47,6 +49,13 @@ class MealDbApi {
         .map((mealJson) => Meal.fromJson(mealJson as Map<String, dynamic>))
         .toList()[0];
   }
-}
 
-final api = MealDbApi();
+  Future<List<Meal>> searchMeals(String searchTerm) async {
+    final url = "${_baseUrl}search.php?s=$searchTerm";
+    final response = await http.get(url);
+    final meals = json.decode(response.body)["meals"] as List<dynamic>;
+    return meals
+        .map((mealJson) => Meal.fromJson(mealJson as Map<String, dynamic>))
+        .toList();
+  }
+}

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_meals/bloc/bloc_provider.dart';
 import 'package:flutter_meals/bloc/main_pages_bloc.dart';
 import 'package:flutter_meals/bloc/navigation_bloc.dart';
+import 'package:flutter_meals/bloc/search_bloc.dart';
 import 'package:flutter_meals/model/meal.dart';
 import 'package:flutter_meals/page/categories_page.dart';
 import 'package:flutter_meals/page/ingredients_page.dart';
@@ -13,6 +14,7 @@ import 'package:flutter_meals/widget/loading/loading.dart';
 
 class HomePage extends StatelessWidget {
   final mainPagesBloc = MainPagesBloc();
+  final searchBloc = SearchBloc();
 
   void _goToMealDetails(BuildContext context, Meal meal) {
     Navigator.push(
@@ -23,7 +25,12 @@ class HomePage extends StatelessWidget {
 
   void _goToSearch(BuildContext context) {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => SearchPage()));
+        context,
+        MaterialPageRoute(
+            builder: (context) => BlocProvider(
+                  child: SearchPage(),
+                  bloc: searchBloc,
+                )));
   }
 
   @override
@@ -45,6 +52,7 @@ class HomePage extends StatelessWidget {
 
     return StreamBuilder(
         stream: navigationBloc.homePageIndexStream,
+        initialData: 0,
         builder: (context, AsyncSnapshot<int> pageIndexSnapshot) {
           return Scaffold(
             appBar: AppBar(
