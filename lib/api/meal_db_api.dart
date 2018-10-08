@@ -61,8 +61,10 @@ class MealDbApi {
   }
 
   List<Meal> _mapToListOfMeals(List<dynamic> list) {
-    return list
-        .map((mealJson) => Meal.fromJson(mealJson as Map<String, dynamic>))
-        .toList();
+    return list == null
+        ? []
+        : list
+            .map((mealJson) => Meal.fromJson(mealJson as Map<String, dynamic>))
+            .toList();
   }
 }

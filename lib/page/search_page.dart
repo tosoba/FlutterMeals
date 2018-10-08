@@ -11,7 +11,7 @@ import 'package:flutter_meals/widget/sorted_meal_list/sorted_meal_list.dart';
 class SearchPage extends StatefulWidget {
   @override
   SearchPageState createState() {
-    return new SearchPageState();
+    return SearchPageState();
   }
 }
 
@@ -48,11 +48,17 @@ class SearchPageState extends State<SearchPage> {
                         builder: (context,
                             AsyncSnapshot<List<Meal>> foundMealsSnapshot) {
                           if (!foundMealsSnapshot.hasData ||
-                              foundMealsSnapshot.data == null ||
-                              foundMealsSnapshot.data.length == 0) {
+                              foundMealsSnapshot.data == null) {
                             return Center(
                               child: Text(
                                 "Search for meals.",
+                                style: Style.headerTextStyleBlack,
+                              ),
+                            );
+                          } else if (foundMealsSnapshot.data.length == 0) {
+                            return Center(
+                              child: Text(
+                                "No meals found.",
                                 style: Style.headerTextStyleBlack,
                               ),
                             );

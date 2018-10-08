@@ -15,7 +15,6 @@ import 'package:flutter_meals/widget/loading/snapshot_loading_widget.dart';
 
 class HomePage extends StatelessWidget {
   final mainPagesBloc = MainPagesBloc();
-  final searchBloc = SearchBloc();
 
   _goToMealDetails(BuildContext context, Meal meal) {
     Navigator.push(
@@ -30,7 +29,7 @@ class HomePage extends StatelessWidget {
         MaterialPageRoute(
           builder: (context) => BlocProvider(
                 child: SearchPage(),
-                bloc: searchBloc,
+                bloc: SearchBloc(),
               ),
         ));
   }
