@@ -1,22 +1,29 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_meals/bloc/bloc_provider.dart';
-import 'package:flutter_meals/bloc/search_bloc.dart';
 import 'package:flutter_meals/const/text_style.dart';
 import 'package:flutter_meals/model/meal.dart';
 import 'package:flutter_meals/widget/search_bar/search_bar_with_back_button.dart';
 import 'package:flutter_meals/widget/sorted_meal_list/sorted_meal_list.dart';
 
-class SearchPage extends StatelessWidget {
+class MealListPage extends StatefulWidget {
+  final List<Meal> meals;
+
+  MealListPage({Key key, @required this.meals}) : super(key: key);
+
+  @override
+  MealListPageState createState() {
+    return new MealListPageState();
+  }
+}
+
+class MealListPageState extends State<MealListPage> {
   final TextEditingController controller = TextEditingController();
+  String _filter = "";
 
   @override
   Widget build(BuildContext context) {
-    final bloc = BlocProvider.of<SearchBloc>(context);
-
     controller.addListener(() {
-      if (controller.text != null && controller.text.isNotEmpty)
-        bloc.searchSink.add(controller.text);
+      _filter = controller.text;
     });
 
     return Scaffold(
@@ -30,25 +37,23 @@ class SearchPage extends StatelessWidget {
                 controller: controller,
               ),
               Expanded(
-                child: StreamBuilder(
-                    stream: bloc.foundMealsStream,
-                    builder: (context, AsyncSnapshot<List<Meal>> snapshot) {
-                      if (!snapshot.hasData ||
-                          snapshot.data == null ||
-                          snapshot.data.length == 0) {
-                        return Center(
+                  child: (widget.meals == null || widget.meals.length == 0)
+                      ? Center(
                           child: Text(
-                            "Search for meals.",
+                            "No meals found.",
                             style: Style.headerTextStyleBlack,
                           ),
-                        );
-                      }
-                      return SortedMealList(
-                        meals: snapshot.data,
-                        sortString: controller.text,
-                      );
-                    }),
-              )
+                        )
+                      : SortedMealList(
+                          meals: widget.meals
+                              .where((meal) => _filter.isNotEmpty
+                                  ? meal.name
+                                      .toLowerCase()
+                                      .contains(_filter.toLowerCase())
+                                  : true)
+                              .toList(),
+                          sortString: controller.text,
+                        )),
             ],
           ),
         ),

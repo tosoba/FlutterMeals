@@ -21,7 +21,7 @@ class SearchBloc extends BlocBase {
   }
 
   @override
-  void dispose() {
+  dispose() {
     _searchSubject.close();
     _foundMealsSubject.close();
     disposed = true;

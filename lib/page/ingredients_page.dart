@@ -41,6 +41,8 @@ class IngredientsPageState extends State<IngredientsPage> {
             }
             return Expanded(
               child: CardListView(
+                onItemTap: (index) =>
+                    bloc.selectedIngredientSink.add(snapshot.data[index]),
                 items: snapshot.data
                     .map((ingredient) => CardListViewItemModel(
                         name: ingredient.name,

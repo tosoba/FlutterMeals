@@ -10,7 +10,10 @@ class MainPagesBloc extends BlocBase {
   final _categoriesSubject = BehaviorSubject<List<Category>>();
   final _ingredientsSubject = BehaviorSubject<List<Ingredient>>();
   final _selectedMealSubject = PublishSubject<Meal>();
-  final _randomMealLoadingSubject = BehaviorSubject<bool>(seedValue: false);
+  final _loadingSubject = BehaviorSubject<bool>(seedValue: false);
+  final _foundMealsSubject = PublishSubject<List<Meal>>();
+  final _selectedIngredientSubject = PublishSubject<Ingredient>();
+  final _selectedCategorySubject = PublishSubject<Category>();
 
   Observable<List<Meal>> get latestMealsStream => _latestMealsSubject.stream;
 
@@ -21,10 +24,16 @@ class MainPagesBloc extends BlocBase {
 
   Observable<Meal> get selectedMealStream => _selectedMealSubject.stream;
 
-  Observable<bool> get randomMealLoadingStream =>
-      _randomMealLoadingSubject.stream;
+  Observable<bool> get loadingStream => _loadingSubject.stream;
+
+  Observable<List<Meal>> get foundMealsStream => _foundMealsSubject.stream;
 
   Sink<Meal> get selectedMealSink => _selectedMealSubject.sink;
+
+  Sink<Ingredient> get selectedIngredientSink =>
+      _selectedIngredientSubject.sink;
+
+  Sink<Category> get selectedCategorySink => _selectedCategorySubject.sink;
 
   MainPagesBloc() {
     load();
@@ -40,21 +49,40 @@ class MainPagesBloc extends BlocBase {
     MealDbApi.instance
         .getIngredients()
         .then((ingredients) => _ingredientsSubject.add(ingredients));
+
+    _selectedCategorySubject.forEach((category) {
+      _loadingSubject.add(true);
+      MealDbApi.instance.findMealsByCategory(category).then((meals) {
+        _loadingSubject.add(false);
+        _foundMealsSubject.add(meals);
+      });
+    });
+
+    _selectedIngredientSubject.forEach((ingredient) {
+      _loadingSubject.add(true);
+      MealDbApi.instance.findMealsByIngredient(ingredient).then((meals) {
+        _loadingSubject.add(false);
+        _foundMealsSubject.add(meals);
+      });
+    });
   }
 
   loadRandomMeal() {
-    _randomMealLoadingSubject.add(true);
+    _loadingSubject.add(true);
     MealDbApi.instance.getRandomMeal().then((meal) {
-      _randomMealLoadingSubject.add(false);
+      _loadingSubject.add(false);
       _selectedMealSubject.add(meal);
     });
   }
 
-  void dispose() {
+  dispose() {
     _latestMealsSubject.close();
     _categoriesSubject.close();
     _ingredientsSubject.close();
     _selectedMealSubject.close();
-    _randomMealLoadingSubject.close();
+    _loadingSubject.close();
+    _foundMealsSubject.close();
+    _selectedCategorySubject.close();
+    _selectedIngredientSubject.close();
   }
 }

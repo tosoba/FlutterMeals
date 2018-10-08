@@ -13,8 +13,10 @@ class CardListViewItemModel {
 
 class CardListViewItem extends StatelessWidget {
   final CardListViewItemModel model;
+  final GestureTapCallback onTap;
 
-  const CardListViewItem({Key key, this.model}) : super(key: key);
+  const CardListViewItem({Key key, @required this.model, this.onTap})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +56,7 @@ class CardListViewItem extends StatelessWidget {
       ),
     );
 
-    return Container(
+    final widget = Container(
       height: 200.0,
       child: Padding(
         padding: EdgeInsets.all(8.0),
@@ -68,5 +70,12 @@ class CardListViewItem extends StatelessWidget {
         ),
       ),
     );
+
+    return onTap == null
+        ? widget
+        : GestureDetector(
+            child: widget,
+            onTap: onTap,
+          );
   }
 }

@@ -9,6 +9,7 @@ import 'package:flutter_meals/page/categories_page.dart';
 import 'package:flutter_meals/page/ingredients_page.dart';
 import 'package:flutter_meals/page/latest_meals_page.dart';
 import 'package:flutter_meals/page/meal_detail_page.dart';
+import 'package:flutter_meals/page/meal_list_page.dart';
 import 'package:flutter_meals/page/search_page.dart';
 import 'package:flutter_meals/widget/loading/loading.dart';
 
@@ -16,20 +17,29 @@ class HomePage extends StatelessWidget {
   final mainPagesBloc = MainPagesBloc();
   final searchBloc = SearchBloc();
 
-  void _goToMealDetails(BuildContext context, Meal meal) {
+  _goToMealDetails(BuildContext context, Meal meal) {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => MealDetailPage(meal)),
     );
   }
 
-  void _goToSearch(BuildContext context) {
+  _goToSearch(BuildContext context) {
     Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => BlocProvider(
                   child: SearchPage(),
                   bloc: searchBloc,
+                )));
+  }
+
+  _goToMealList(BuildContext context, List<Meal> meals) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => MealListPage(
+                  meals: meals,
                 )));
   }
 
@@ -46,9 +56,11 @@ class HomePage extends StatelessWidget {
       )
     ];
 
-    mainPagesBloc.selectedMealStream.forEach((meal) {
-      _goToMealDetails(context, meal);
-    });
+    mainPagesBloc.selectedMealStream
+        .forEach((meal) => _goToMealDetails(context, meal));
+
+    mainPagesBloc.foundMealsStream
+        .forEach((meals) => _goToMealList(context, meals));
 
     return StreamBuilder(
         stream: navigationBloc.homePageIndexStream,
@@ -67,7 +79,7 @@ class HomePage extends StatelessWidget {
               ],
             ),
             body: StreamBuilder(
-              stream: mainPagesBloc.randomMealLoadingStream,
+              stream: mainPagesBloc.loadingStream,
               builder:
                   (context, AsyncSnapshot<bool> randomMealLoadingSnapshot) {
                 return Stack(children: [

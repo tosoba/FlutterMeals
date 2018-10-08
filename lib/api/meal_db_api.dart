@@ -58,4 +58,22 @@ class MealDbApi {
         .map((mealJson) => Meal.fromJson(mealJson as Map<String, dynamic>))
         .toList();
   }
+
+  Future<List<Meal>> findMealsByIngredient(Ingredient ingredient) async {
+    final url = "${_baseUrl}filter.php?i=${ingredient.name}";
+    final response = await http.get(url);
+    final meals = json.decode(response.body)["meals"] as List<dynamic>;
+    return meals
+        .map((mealJson) => Meal.fromJson(mealJson as Map<String, dynamic>))
+        .toList();
+  }
+
+  Future<List<Meal>> findMealsByCategory(Category category) async {
+    final url = "${_baseUrl}filter.php?c=${category.name}";
+    final response = await http.get(url);
+    final meals = json.decode(response.body)["meals"] as List<dynamic>;
+    return meals
+        .map((mealJson) => Meal.fromJson(mealJson as Map<String, dynamic>))
+        .toList();
+  }
 }

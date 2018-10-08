@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 abstract class BlocBase {
-  void dispose();
+  dispose();
 }
 
 class BlocProvider<T extends BlocBase> extends StatefulWidget {
@@ -28,7 +28,7 @@ class BlocProvider<T extends BlocBase> extends StatefulWidget {
 
 class _BlocProviderState<T> extends State<BlocProvider<BlocBase>> {
   @override
-  void dispose() {
+  dispose() {
     widget.bloc.dispose();
     super.dispose();
   }

@@ -10,7 +10,7 @@ class NavigationBloc implements BlocBase {
     _homePageIndexSubject.add(index);
   }
 
-  void dispose() {
+  dispose() {
     _homePageIndexSubject.close();
   }
 }

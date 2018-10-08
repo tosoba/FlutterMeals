@@ -19,6 +19,8 @@ class CategoriesPage extends StatelessWidget {
           );
         }
         return CardListView(
+          onItemTap: (index) =>
+              bloc.selectedCategorySink.add(snapshot.data[index]),
           items: snapshot.data
               .map((category) => CardListViewItemModel(
                   name: category.name, imageUrl: category.thumbnailUrl))

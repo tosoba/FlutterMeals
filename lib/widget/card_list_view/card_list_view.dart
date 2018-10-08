@@ -3,8 +3,9 @@ import 'package:flutter_meals/widget/card_list_view/card_item.dart';
 
 class CardListView extends StatelessWidget {
   final List<CardListViewItemModel> items;
+  final void Function(int) onItemTap;
 
-  CardListView({@required this.items});
+  CardListView({@required this.items, this.onItemTap});
 
   @override
   Widget build(BuildContext context) {
@@ -14,6 +15,11 @@ class CardListView extends StatelessWidget {
         itemBuilder: (context, index) {
           return CardListViewItem(
             model: items[index],
+            onTap: onItemTap == null
+                ? null
+                : () {
+                    onItemTap(index);
+                  },
           );
         },
       ),
