@@ -37,13 +37,13 @@ class MealSummary extends StatelessWidget {
         children: <Widget>[
           Container(height: 4.0),
           Text(
-            meal.name,
+            meal.name ?? "",
             style: Style.titleTextStyle,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
           Container(height: 10.0),
-          Text(meal.cuisine, style: Style.commonTextStyle),
+          Text(meal.cuisine ?? "", style: Style.commonTextStyle),
           Separator(),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -51,7 +51,7 @@ class MealSummary extends StatelessWidget {
               Expanded(
                   flex: horizontal ? 1 : 0,
                   child: _mealDetailWidget(
-                    value: meal.cuisine,
+                    value: meal.cuisine ?? "",
                     icon: Icon(Icons.book),
                     widget: new InkWell(
                         child: new Text(
@@ -68,7 +68,7 @@ class MealSummary extends StatelessWidget {
               Expanded(
                   flex: horizontal ? 1 : 0,
                   child: _mealDetailWidget(
-                    value: meal.cuisine,
+                    value: meal.cuisine ?? "",
                     icon: Icon(Icons.video_label),
                     widget: new InkWell(
                         child: new Text(

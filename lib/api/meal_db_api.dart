@@ -12,19 +12,13 @@ class MealDbApi {
   static final instance = MealDbApi();
 
   Future<List<Meal>> getLatestMeals() async {
-    final url = "${_baseUrl}latest.php";
-    final response = await http.get(url);
-    final meals = json.decode(response.body)["meals"] as List<dynamic>;
-    return meals
-        .map((mealJson) => Meal.fromJson(mealJson as Map<String, dynamic>))
-        .toList();
+    return _mapToListOfMeals(
+        await _getListFromUrl("${_baseUrl}latest.php", "meals"));
   }
 
   Future<List<Category>> getCategories() async {
-    final url = "${_baseUrl}categories.php";
-    final response = await http.get(url);
     final categories =
-        json.decode(response.body)["categories"] as List<dynamic>;
+        await _getListFromUrl("${_baseUrl}categories.php", "categories");
     return categories
         .map((categoryJson) =>
             Category.fromJson(categoryJson as Map<String, dynamic>))
@@ -32,9 +26,8 @@ class MealDbApi {
   }
 
   Future<List<Ingredient>> getIngredients() async {
-    final url = "${_baseUrl}list.php?i=list";
-    final response = await http.get(url);
-    final ingredients = json.decode(response.body)["meals"] as List<dynamic>;
+    final ingredients =
+        await _getListFromUrl("${_baseUrl}list.php?i=list", "meals");
     return ingredients
         .map((ingredientJson) =>
             Ingredient.fromJson(ingredientJson as Map<String, dynamic>))
@@ -42,37 +35,33 @@ class MealDbApi {
   }
 
   Future<Meal> getRandomMeal() async {
-    final url = "${_baseUrl}random.php";
-    final response = await http.get(url);
-    final meals = json.decode(response.body)["meals"] as List<dynamic>;
-    return meals
-        .map((mealJson) => Meal.fromJson(mealJson as Map<String, dynamic>))
-        .toList()[0];
+    return _mapToListOfMeals(
+        await _getListFromUrl("${_baseUrl}random.php", "meals"))[0];
   }
 
   Future<List<Meal>> searchMeals(String searchTerm) async {
-    final url = "${_baseUrl}search.php?s=$searchTerm";
-    final response = await http.get(url);
-    final meals = json.decode(response.body)["meals"] as List<dynamic>;
-    return meals
-        .map((mealJson) => Meal.fromJson(mealJson as Map<String, dynamic>))
-        .toList();
+    return _mapToListOfMeals(
+        await _getListFromUrl("${_baseUrl}search.php?s=$searchTerm", "meals"));
   }
 
   Future<List<Meal>> findMealsByIngredient(Ingredient ingredient) async {
-    final url = "${_baseUrl}filter.php?i=${ingredient.name}";
-    final response = await http.get(url);
-    final meals = json.decode(response.body)["meals"] as List<dynamic>;
-    return meals
-        .map((mealJson) => Meal.fromJson(mealJson as Map<String, dynamic>))
-        .toList();
+    return _mapToListOfMeals(await _getListFromUrl(
+        "${_baseUrl}filter.php?i=${ingredient.name}", "meals"));
   }
 
   Future<List<Meal>> findMealsByCategory(Category category) async {
-    final url = "${_baseUrl}filter.php?c=${category.name}";
+    return _mapToListOfMeals(await _getListFromUrl(
+        "${_baseUrl}filter.php?c=${category.name}", "meals"));
+  }
+
+  Future<List<dynamic>> _getListFromUrl(
+      String url, String listPropertyName) async {
     final response = await http.get(url);
-    final meals = json.decode(response.body)["meals"] as List<dynamic>;
-    return meals
+    return json.decode(response.body)[listPropertyName] as List<dynamic>;
+  }
+
+  List<Meal> _mapToListOfMeals(List<dynamic> list) {
+    return list
         .map((mealJson) => Meal.fromJson(mealJson as Map<String, dynamic>))
         .toList();
   }

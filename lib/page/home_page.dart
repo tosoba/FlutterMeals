@@ -11,7 +11,7 @@ import 'package:flutter_meals/page/latest_meals_page.dart';
 import 'package:flutter_meals/page/meal_detail_page.dart';
 import 'package:flutter_meals/page/meal_list_page.dart';
 import 'package:flutter_meals/page/search_page.dart';
-import 'package:flutter_meals/widget/loading/loading.dart';
+import 'package:flutter_meals/widget/loading/snapshot_loading_widget.dart';
 
 class HomePage extends StatelessWidget {
   final mainPagesBloc = MainPagesBloc();
@@ -28,19 +28,21 @@ class HomePage extends StatelessWidget {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => BlocProvider(
-                  child: SearchPage(),
-                  bloc: searchBloc,
-                )));
+          builder: (context) => BlocProvider(
+                child: SearchPage(),
+                bloc: searchBloc,
+              ),
+        ));
   }
 
   _goToMealList(BuildContext context, List<Meal> meals) {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => MealListPage(
-                  meals: meals,
-                )));
+          builder: (context) => MealListPage(
+                meals: meals,
+              ),
+        ));
   }
 
   @override
@@ -80,19 +82,13 @@ class HomePage extends StatelessWidget {
             ),
             body: StreamBuilder(
               stream: mainPagesBloc.loadingStream,
-              builder:
-                  (context, AsyncSnapshot<bool> randomMealLoadingSnapshot) {
+              builder: (context, AsyncSnapshot<bool> loadingSnapshot) {
                 return Stack(children: [
                   _childPages[
                       pageIndexSnapshot.hasData ? pageIndexSnapshot.data : 0],
-                  (!randomMealLoadingSnapshot.hasData ||
-                          randomMealLoadingSnapshot.data == null ||
-                          randomMealLoadingSnapshot.data == false)
-                      ? Container(
-                          width: 0.0,
-                          height: 0.0,
-                        )
-                      : Loading()
+                  SnapshotLoadingWidget(
+                    loadingSnapshot: loadingSnapshot,
+                  )
                 ]);
               },
             ),

@@ -90,7 +90,8 @@ class MealDetailPage extends StatelessWidget {
                     Separator(
                       color: Theme.of(context).primaryColor,
                     ),
-                    Text(meal.instructions, style: Style.commonTextStyleBlack),
+                    Text(meal.instructions ?? "",
+                        style: Style.commonTextStyleBlack),
                   ],
                 ),
               ),
