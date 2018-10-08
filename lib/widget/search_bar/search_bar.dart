@@ -4,8 +4,13 @@ import 'package:flutter/material.dart';
 class SearchBar extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
+  final bool autoFocus;
 
-  const SearchBar({Key key, @required this.controller, this.hintText: 'Search'})
+  const SearchBar(
+      {Key key,
+      @required this.controller,
+      this.hintText: 'Search',
+      this.autoFocus: false})
       : super(key: key);
 
   @override
@@ -18,6 +23,7 @@ class SearchBar extends StatelessWidget {
               child: ListTile(
                 leading: Icon(Icons.search),
                 title: TextField(
+                  autofocus: autoFocus,
                   controller: controller,
                   decoration: InputDecoration(
                       hintText: 'Search', border: InputBorder.none),

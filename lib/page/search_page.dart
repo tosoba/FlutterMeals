@@ -58,6 +58,7 @@ class SearchPageState extends State<SearchPage> {
             children: <Widget>[
               SearchBarWithBackButton(
                 controller: controller,
+                autoFocus: true,
               ),
               Expanded(
                 child: Stack(

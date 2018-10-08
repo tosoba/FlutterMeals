@@ -4,8 +4,10 @@ import 'package:flutter_meals/widget/search_bar/search_bar.dart';
 
 class SearchBarWithBackButton extends StatelessWidget {
   final TextEditingController controller;
+  final bool autoFocus;
 
-  const SearchBarWithBackButton({Key key, @required this.controller})
+  const SearchBarWithBackButton(
+      {Key key, @required this.controller, this.autoFocus: false})
       : super(key: key);
 
   @override
@@ -22,9 +24,7 @@ class SearchBarWithBackButton extends StatelessWidget {
             },
           ),
           Expanded(
-              child: SearchBar(
-            controller: controller,
-          )),
+              child: SearchBar(autoFocus: autoFocus, controller: controller))
         ],
       ),
     );
