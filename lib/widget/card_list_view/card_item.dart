@@ -13,7 +13,7 @@ class CardListViewItemModel {
 
 class CardListViewItem extends StatelessWidget {
   final CardListViewItemModel model;
-  final GestureTapCallback onTap;
+  final Function(String) onTap;
 
   const CardListViewItem({Key key, @required this.model, this.onTap})
       : super(key: key);
@@ -75,7 +75,7 @@ class CardListViewItem extends StatelessWidget {
         ? widget
         : GestureDetector(
             child: widget,
-            onTap: onTap,
+            onTap: () => onTap(model.name),
           );
   }
 }

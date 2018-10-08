@@ -6,7 +6,7 @@ import 'package:flutter_meals/widget/card_list_view/card_list_view.dart';
 class SortedMealList extends StatelessWidget {
   final List<Meal> meals;
   final String sortString;
-  final void Function(int) onItemTap;
+  final void Function(String) onItemTap;
 
   const SortedMealList(
       {Key key,

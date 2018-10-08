@@ -55,8 +55,10 @@ class MealListPageState extends State<MealListPage> {
                           ),
                         )
                       : SortedMealList(
-                          onItemTap: (index) =>
-                              _goToMealDetails(context, widget.meals[index]),
+                          onItemTap: (mealName) => _goToMealDetails(
+                              context,
+                              widget.meals
+                                  .firstWhere((meal) => meal.name == mealName)),
                           meals: widget.meals
                               .where((meal) => _filter.isNotEmpty
                                   ? meal.name

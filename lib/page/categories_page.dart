@@ -42,8 +42,8 @@ class CategoriesPageState extends State<CategoriesPage> {
           }
           return Expanded(
             child: CardListView(
-              onItemTap: (index) =>
-                  bloc.selectedCategorySink.add(snapshot.data[index]),
+              onItemTap: (mealName) => bloc.selectedCategorySink.add(
+                  snapshot.data.firstWhere((meal) => meal.name == mealName)),
               items: snapshot.data
                   .map((category) => CardListViewItemModel(
                       name: category.name, imageUrl: category.thumbnailUrl))

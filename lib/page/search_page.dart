@@ -72,8 +72,10 @@ class SearchPageState extends State<SearchPage> {
                             );
                           }
                           return SortedMealList(
-                            onItemTap: (index) => _goToMealDetails(
-                                context, foundMealsSnapshot.data[index]),
+                            onItemTap: (mealName) => _goToMealDetails(
+                                context,
+                                foundMealsSnapshot.data.firstWhere(
+                                    (meal) => meal.name == mealName)),
                             meals: foundMealsSnapshot.data,
                             sortString: _lastSearch,
                           );
