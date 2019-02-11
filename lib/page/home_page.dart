@@ -14,7 +14,37 @@ import 'package:flutter_meals/page/search_page.dart';
 import 'package:flutter_meals/widget/loading/snapshot_loading_widget.dart';
 
 class HomePage extends StatelessWidget {
-  final mainPagesBloc = MainPagesBloc();
+  static final _mainPagesBloc = MainPagesBloc();
+
+  final List<Widget> _childPages = [
+    BlocProvider(child: LatestMealsPage(), bloc: _mainPagesBloc),
+    BlocProvider(child: CategoriesPage(), bloc: _mainPagesBloc),
+    BlocProvider(
+      child: IngredientsPage(),
+      bloc: _mainPagesBloc,
+    )
+  ];
+
+  Widget _body(int pageIndex) {
+    return Stack(
+      children: List<Widget>.generate(_childPages.length, (int index) {
+        return IgnorePointer(
+          ignoring: index != pageIndex,
+          child: Opacity(
+            opacity: pageIndex == index ? 1.0 : 0.0,
+            child: Navigator(
+              onGenerateRoute: (RouteSettings settings) {
+                return new MaterialPageRoute(
+                  builder: (_) => _childPages[index],
+                  settings: settings,
+                );
+              },
+            ),
+          ),
+        );
+      }),
+    );
+  }
 
   _goToMealDetails(BuildContext context, Meal meal) {
     Navigator.push(
@@ -40,19 +70,10 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final navigationBloc = BlocProvider.of<HomeNavigationBloc>(context);
 
-    final List<Widget> _childPages = [
-      BlocProvider(child: LatestMealsPage(), bloc: mainPagesBloc),
-      BlocProvider(child: CategoriesPage(), bloc: mainPagesBloc),
-      BlocProvider(
-        child: IngredientsPage(),
-        bloc: mainPagesBloc,
-      )
-    ];
-
-    mainPagesBloc.randomMealStream
+    _mainPagesBloc.randomMealStream
         .listen((meal) => _goToMealDetails(context, meal));
 
-    mainPagesBloc.foundMealsStream
+    _mainPagesBloc.foundMealsStream
         .listen((meals) => _goToMealList(context, meals));
 
     return StreamBuilder(
@@ -72,11 +93,10 @@ class HomePage extends StatelessWidget {
               ],
             ),
             body: StreamBuilder(
-              stream: mainPagesBloc.loadingStream,
+              stream: _mainPagesBloc.loadingStream,
               builder: (context, AsyncSnapshot<bool> loadingSnapshot) {
                 return Stack(children: [
-                  _childPages[
-                      pageIndexSnapshot.hasData ? pageIndexSnapshot.data : 0],
+                  _body(pageIndexSnapshot.hasData ? pageIndexSnapshot.data : 0),
                   SnapshotLoadingWidget(
                     loadingSnapshot: loadingSnapshot,
                   )
@@ -85,7 +105,7 @@ class HomePage extends StatelessWidget {
             ),
             floatingActionButton: FloatingActionButton.extended(
               onPressed: () {
-                mainPagesBloc.loadRandomMeal();
+                _mainPagesBloc.loadRandomMeal();
               },
               label: Text("Random meal"),
               icon: Icon(Icons.restaurant_menu),
