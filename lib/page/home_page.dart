@@ -19,10 +19,7 @@ class HomePage extends StatelessWidget {
   final List<Widget> _childPages = [
     BlocProvider(child: LatestMealsPage(), bloc: _mainPagesBloc),
     BlocProvider(child: CategoriesPage(), bloc: _mainPagesBloc),
-    BlocProvider(
-      child: IngredientsPage(),
-      bloc: _mainPagesBloc,
-    )
+    BlocProvider(child: IngredientsPage(), bloc: _mainPagesBloc)
   ];
 
   Widget _body(int pageIndex) {
@@ -55,15 +52,23 @@ class HomePage extends StatelessWidget {
 
   _goToSearch(BuildContext context) {
     Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-                BlocProvider(child: SearchPage(), bloc: SearchBloc())));
+      context,
+      MaterialPageRoute(
+        builder: (context) => BlocProvider(
+          child: SearchPage(),
+          bloc: SearchBloc(),
+        ),
+      ),
+    );
   }
 
   _goToMealList(BuildContext context, List<Meal> meals) {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => MealListPage(meals: meals)));
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MealListPage(meals: meals),
+      ),
+    );
   }
 
   @override
@@ -119,14 +124,16 @@ class HomePage extends StatelessWidget {
               items: [
                 BottomNavigationBarItem(
                   icon: Icon(Icons.rss_feed),
-                  title: Text('Latest'),
+                  label: 'Latest',
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.category),
-                  title: Text('Categories'),
+                  label: 'Categories',
                 ),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.list), title: Text('Ingredients'))
+                  icon: Icon(Icons.list),
+                  label: 'Ingredients',
+                )
               ],
             ),
           );

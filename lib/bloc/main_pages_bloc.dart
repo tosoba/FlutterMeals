@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_meals/api/meal_db_api.dart';
 import 'package:flutter_meals/bloc/bloc_provider.dart';
 import 'package:flutter_meals/model/category.dart';
@@ -10,23 +12,22 @@ class MainPagesBloc extends BlocBase {
   final _categoriesSubject = BehaviorSubject<List<Category>>();
   final _ingredientsSubject = BehaviorSubject<List<Ingredient>>();
   final _randomMealSubject = PublishSubject<Meal>();
-  final _loadingSubject = BehaviorSubject<bool>(seedValue: false);
+  final _loadingSubject = BehaviorSubject.seeded(false);
   final _foundMealsSubject = PublishSubject<List<Meal>>();
   final _selectedIngredientSubject = PublishSubject<Ingredient>();
   final _selectedCategorySubject = PublishSubject<Category>();
 
-  Observable<List<Meal>> get latestMealsStream => _latestMealsSubject.stream;
+  Stream<List<Meal>> get latestMealsStream => _latestMealsSubject.stream;
 
-  Observable<List<Category>> get categoriesStream => _categoriesSubject.stream;
+  Stream<List<Category>> get categoriesStream => _categoriesSubject.stream;
 
-  Observable<List<Ingredient>> get ingredientsStream =>
-      _ingredientsSubject.stream;
+  Stream<List<Ingredient>> get ingredientsStream => _ingredientsSubject.stream;
 
-  Observable<Meal> get randomMealStream => _randomMealSubject.stream;
+  Stream<Meal> get randomMealStream => _randomMealSubject.stream;
 
-  Observable<bool> get loadingStream => _loadingSubject.stream;
+  Stream<bool> get loadingStream => _loadingSubject.stream;
 
-  Observable<List<Meal>> get foundMealsStream => _foundMealsSubject.stream;
+  Stream<List<Meal>> get foundMealsStream => _foundMealsSubject.stream;
 
   Sink<Meal> get selectedMealSink => _randomMealSubject.sink;
 

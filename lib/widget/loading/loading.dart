@@ -10,8 +10,8 @@ class Loading extends StatelessWidget {
         height: 80.0,
         color: Colors.white.withOpacity(.8),
         foregroundDecoration: BoxDecoration(
-            border:
-                Border.all(color: Theme.of(context).primaryColor, width: 2.0)),
+          border: Border.all(color: Theme.of(context).primaryColor, width: 2.0),
+        ),
         child: Padding(
           padding: EdgeInsets.all(20.0),
           child: CircularProgressIndicator(),

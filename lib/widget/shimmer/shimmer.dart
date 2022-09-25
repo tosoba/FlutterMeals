@@ -49,11 +49,17 @@ class Shimmer extends StatefulWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(new DiagnosticsProperty<Gradient>('gradient', gradient,
-        defaultValue: null));
-    properties.add(new EnumProperty<ShimmerDirection>('direction', direction));
-    properties.add(new DiagnosticsProperty<Duration>('period', period,
-        defaultValue: null));
+    properties.add(DiagnosticsProperty<Gradient>(
+      'gradient',
+      gradient,
+      defaultValue: null,
+    ));
+    properties.add(EnumProperty<ShimmerDirection>('direction', direction));
+    properties.add(DiagnosticsProperty<Duration>(
+      'period',
+      period,
+      defaultValue: null,
+    ));
   }
 }
 

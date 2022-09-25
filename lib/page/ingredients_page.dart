@@ -28,9 +28,7 @@ class IngredientsPageState extends State<IngredientsPage> {
     final bloc = BlocProvider.of<MainPagesBloc>(context);
 
     return Column(children: <Widget>[
-      SearchBar(
-        controller: controller,
-      ),
+      SearchBar(controller: controller),
       StreamBuilder(
           stream: bloc.ingredientsStream,
           builder: (context, AsyncSnapshot<List<Ingredient>> snapshot) {
@@ -42,16 +40,22 @@ class IngredientsPageState extends State<IngredientsPage> {
             return Expanded(
               child: CardListView(
                 onItemTap: (mealName) => bloc.selectedIngredientSink.add(
-                    snapshot.data.firstWhere((meal) => meal.name == mealName)),
+                  snapshot.data.firstWhere((meal) => meal.name == mealName),
+                ),
                 items: snapshot.data
-                    .map((ingredient) => CardListViewItemModel(
+                    .map(
+                      (ingredient) => CardListViewItemModel(
                         name: ingredient.name,
-                        imageUrl: ingredient.thumbnailUrl))
-                    .where((ingredient) => _filter.isNotEmpty
-                        ? ingredient.name
-                            .toLowerCase()
-                            .contains(_filter.toLowerCase())
-                        : true)
+                        imageUrl: ingredient.thumbnailUrl,
+                      ),
+                    )
+                    .where(
+                      (ingredient) => _filter.isNotEmpty
+                          ? ingredient.name
+                              .toLowerCase()
+                              .contains(_filter.toLowerCase())
+                          : true,
+                    )
                     .toList(),
               ),
             );

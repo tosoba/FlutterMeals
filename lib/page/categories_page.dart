@@ -9,9 +9,7 @@ import 'package:flutter_meals/widget/search_bar/search_bar.dart';
 
 class CategoriesPage extends StatefulWidget {
   @override
-  CategoriesPageState createState() {
-    return CategoriesPageState();
-  }
+  CategoriesPageState createState() => CategoriesPageState();
 }
 
 class CategoriesPageState extends State<CategoriesPage> {
@@ -29,9 +27,7 @@ class CategoriesPageState extends State<CategoriesPage> {
     final bloc = BlocProvider.of<MainPagesBloc>(context);
 
     return Column(children: <Widget>[
-      SearchBar(
-        controller: controller,
-      ),
+      SearchBar(controller: controller),
       StreamBuilder(
         stream: bloc.categoriesStream,
         builder: (context, AsyncSnapshot<List<Category>> snapshot) {
@@ -43,15 +39,22 @@ class CategoriesPageState extends State<CategoriesPage> {
           return Expanded(
             child: CardListView(
               onItemTap: (mealName) => bloc.selectedCategorySink.add(
-                  snapshot.data.firstWhere((meal) => meal.name == mealName)),
+                snapshot.data.firstWhere((meal) => meal.name == mealName),
+              ),
               items: snapshot.data
-                  .map((category) => CardListViewItemModel(
-                      name: category.name, imageUrl: category.thumbnailUrl))
-                  .where((category) => _filter.isNotEmpty
-                      ? category.name
-                          .toLowerCase()
-                          .contains(_filter.toLowerCase())
-                      : true)
+                  .map(
+                    (category) => CardListViewItemModel(
+                      name: category.name,
+                      imageUrl: category.thumbnailUrl,
+                    ),
+                  )
+                  .where(
+                    (category) => _filter.isNotEmpty
+                        ? category.name
+                            .toLowerCase()
+                            .contains(_filter.toLowerCase())
+                        : true,
+                  )
                   .toList(),
             ),
           );

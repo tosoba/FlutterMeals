@@ -17,8 +17,9 @@ class MealSummary extends StatelessWidget {
     Widget _mealDetailWidget({String value, Icon icon, Widget widget}) {
       return Container(
         child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[icon, Container(width: 8.0), widget]),
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[icon, Container(width: 8.0), widget],
+        ),
       );
     }
 
@@ -28,7 +29,11 @@ class MealSummary extends StatelessWidget {
         shape: BoxShape.rectangle,
       ),
       margin: EdgeInsets.fromLTRB(
-          horizontal ? 76.0 : 16.0, horizontal ? 16.0 : 16.0, 16.0, 16.0),
+        horizontal ? 76.0 : 16.0,
+        horizontal ? 16.0 : 16.0,
+        16.0,
+        16.0,
+      ),
       constraints: BoxConstraints.expand(),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -49,36 +54,38 @@ class MealSummary extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Expanded(
-                  flex: horizontal ? 1 : 0,
-                  child: _mealDetailWidget(
-                    value: meal.cuisine ?? "",
-                    icon: Icon(Icons.book),
-                    widget: new InkWell(
-                        child: new Text(
-                          'Source',
-                          style: TextStyle(color: Colors.white),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        onTap: () {}),
-                  )),
-              Container(
-                width: 32.0,
+                flex: horizontal ? 1 : 0,
+                child: _mealDetailWidget(
+                  value: meal.cuisine ?? "",
+                  icon: Icon(Icons.book),
+                  widget: InkWell(
+                    child: Text(
+                      'Source',
+                      style: const TextStyle(color: Colors.white),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    onTap: () {},
+                  ),
+                ),
               ),
+              Container(width: 32.0),
               Expanded(
-                  flex: horizontal ? 1 : 0,
-                  child: _mealDetailWidget(
-                    value: meal.cuisine ?? "",
-                    icon: Icon(Icons.video_label),
-                    widget: new InkWell(
-                        child: new Text(
-                          'Video',
-                          style: TextStyle(color: Colors.white),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        onTap: () {}),
-                  ))
+                flex: horizontal ? 1 : 0,
+                child: _mealDetailWidget(
+                  value: meal.cuisine ?? "",
+                  icon: Icon(Icons.video_label),
+                  widget: InkWell(
+                    child: Text(
+                      'Video',
+                      style: TextStyle(color: Colors.white),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    onTap: () {},
+                  ),
+                ),
+              )
             ],
           ),
         ],
@@ -98,10 +105,8 @@ class MealSummary extends StatelessWidget {
     );
 
     return Container(
-        margin: EdgeInsets.symmetric(
-          vertical: 16.0,
-          horizontal: 24.0,
-        ),
-        child: mealCard);
+      margin: EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
+      child: mealCard,
+    );
   }
 }

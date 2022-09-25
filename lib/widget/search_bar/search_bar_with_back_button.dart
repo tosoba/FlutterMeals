@@ -6,9 +6,11 @@ class SearchBarWithBackButton extends StatelessWidget {
   final TextEditingController controller;
   final bool autoFocus;
 
-  const SearchBarWithBackButton(
-      {Key key, @required this.controller, this.autoFocus: false})
-      : super(key: key);
+  const SearchBarWithBackButton({
+    Key key,
+    @required this.controller,
+    this.autoFocus: false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,10 @@ class SearchBarWithBackButton extends StatelessWidget {
             },
           ),
           Expanded(
-              child: SearchBar(autoFocus: autoFocus, controller: controller))
+              child: SearchBar(
+            autoFocus: autoFocus,
+            controller: controller,
+          ))
         ],
       ),
     );

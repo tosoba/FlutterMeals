@@ -7,18 +7,27 @@ import 'package:flutter_meals/model/meal.dart';
 import 'package:http/http.dart' as http;
 
 class MealDbApi {
-  static const _baseUrl = "https://www.themealdb.com/api/json/v1/1/";
+  static const _baseUrl = "themealdb.com";
 
   static final instance = MealDbApi();
 
   Future<List<Meal>> getLatestMeals() async {
-    return _mapToListOfMeals(
-        await _getListFromUrl("${_baseUrl}latest.php", "meals"));
+    return [
+      await getRandomMeal(),
+      await getRandomMeal(),
+      await getRandomMeal(),
+      await getRandomMeal(),
+      await getRandomMeal(),
+    ];
   }
 
   Future<List<Category>> getCategories() async {
-    final categories =
-        await _getListFromUrl("${_baseUrl}categories.php", "categories");
+    final categories = await _getListFromUrl(
+      _baseUrl,
+      "api/json/v1/1/categories.php",
+      {},
+      "categories",
+    );
     return categories
         .map((categoryJson) =>
             Category.fromJson(categoryJson as Map<String, dynamic>))
@@ -26,42 +35,79 @@ class MealDbApi {
   }
 
   Future<List<Ingredient>> getIngredients() async {
-    final ingredients =
-        await _getListFromUrl("${_baseUrl}list.php?i=list", "meals");
+    final ingredients = await _getListFromUrl(
+      _baseUrl,
+      "api/json/v1/1/list.php",
+      {"i": "list"},
+      "meals",
+    );
     return ingredients
-        .map((ingredientJson) =>
-            Ingredient.fromJson(ingredientJson as Map<String, dynamic>))
+        .map(
+          (ingredientJson) => Ingredient.fromJson(
+            ingredientJson as Map<String, dynamic>,
+          ),
+        )
         .toList();
   }
 
   Future<Meal> getRandomMeal() async {
     return _mapToListOfMeals(
-        await _getListFromUrl("${_baseUrl}random.php", "meals"))[0];
+      await _getListFromUrl(_baseUrl, "api/json/v1/1/random.php", {}, "meals"),
+    )[0];
   }
 
   Future<Meal> getMealById(String id) async {
     return _mapToListOfMeals(
-        await _getListFromUrl("${_baseUrl}lookup.php?i=$id", "meals"))[0];
+      await _getListFromUrl(
+        _baseUrl,
+        "api/json/v1/1/lookup.php",
+        {"i": id},
+        "meals",
+      ),
+    )[0];
   }
 
   Future<List<Meal>> searchMeals(String searchTerm) async {
     return _mapToListOfMeals(
-        await _getListFromUrl("${_baseUrl}search.php?s=$searchTerm", "meals"));
+      await _getListFromUrl(
+        _baseUrl,
+        "api/json/v1/1/search.php",
+        {"s": searchTerm},
+        "meals",
+      ),
+    );
   }
 
   Future<List<Meal>> findMealsByIngredient(Ingredient ingredient) async {
-    return _mapToListOfMeals(await _getListFromUrl(
-        "${_baseUrl}filter.php?i=${ingredient.name}", "meals"));
+    return _mapToListOfMeals(
+      await _getListFromUrl(
+        _baseUrl,
+        "api/json/v1/1/filter.php",
+        {"i": ingredient.name},
+        "meals",
+      ),
+    );
   }
 
   Future<List<Meal>> findMealsByCategory(Category category) async {
-    return _mapToListOfMeals(await _getListFromUrl(
-        "${_baseUrl}filter.php?c=${category.name}", "meals"));
+    return _mapToListOfMeals(
+      await _getListFromUrl(
+        _baseUrl,
+        "api/json/v1/1/filter.php",
+        {"c": category.name},
+        "meals",
+      ),
+    );
   }
 
   Future<List<dynamic>> _getListFromUrl(
-      String url, String listPropertyName) async {
-    final response = await http.get(url);
+    String url,
+    String path,
+    Map<String, dynamic> query,
+    String listPropertyName,
+  ) async {
+    final uri = Uri.https(url, path, query);
+    final response = await http.get(uri);
     return json.decode(response.body)[listPropertyName] as List<dynamic>;
   }
 

@@ -14,9 +14,7 @@ class MealListPage extends StatefulWidget {
   MealListPage({Key key, @required this.meals}) : super(key: key);
 
   @override
-  MealListPageState createState() {
-    return MealListPageState();
-  }
+  MealListPageState createState() => MealListPageState();
 }
 
 class MealListPageState extends State<MealListPage> {
@@ -54,14 +52,13 @@ class MealListPageState extends State<MealListPage> {
           color: Colors.white,
           child: Column(
             children: <Widget>[
-              SearchBarWithBackButton(
-                controller: controller,
-              ),
+              SearchBarWithBackButton(controller: controller),
               Expanded(
                 child: StreamBuilder(
-                    stream: childBloc.loadingStream,
-                    builder: (context, AsyncSnapshot<bool> snapshot) {
-                      return Stack(children: <Widget>[
+                  stream: childBloc.loadingStream,
+                  builder: (context, AsyncSnapshot<bool> snapshot) {
+                    return Stack(
+                      children: <Widget>[
                         (widget.meals == null || widget.meals.length == 0)
                             ? Center(
                                 child: Text(
@@ -84,8 +81,10 @@ class MealListPageState extends State<MealListPage> {
                                 sortString: controller.text,
                               ),
                         SnapshotLoadingWidget(loadingSnapshot: snapshot)
-                      ]);
-                    }),
+                      ],
+                    );
+                  },
+                ),
               ),
             ],
           ),

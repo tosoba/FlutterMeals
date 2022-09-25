@@ -12,12 +12,10 @@ class CardListView extends StatelessWidget {
     return Container(
       child: ListView.builder(
         itemCount: items.length,
-        itemBuilder: (context, index) {
-          return CardListViewItem(
-            model: items[index],
-            onTap: onItemTap,
-          );
-        },
+        itemBuilder: (context, index) => CardListViewItem(
+          model: items[index],
+          onTap: onItemTap,
+        ),
       ),
     );
   }

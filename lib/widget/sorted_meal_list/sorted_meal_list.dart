@@ -8,12 +8,12 @@ class SortedMealList extends StatelessWidget {
   final String sortString;
   final void Function(String) onItemTap;
 
-  const SortedMealList(
-      {Key key,
-      @required this.meals,
-      @required this.sortString,
-      this.onItemTap})
-      : super(key: key);
+  const SortedMealList({
+    Key key,
+    @required this.meals,
+    @required this.sortString,
+    this.onItemTap,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,18 +23,18 @@ class SortedMealList extends StatelessWidget {
           .map((meal) => CardListViewItemModel(
               name: meal.name, imageUrl: meal.thumbnailUrl))
           .toList()
-            ..sort((a, b) {
-              if (a.name.toLowerCase().startsWith(sortString.toLowerCase()) &&
-                  !b.name.toLowerCase().startsWith(sortString.toLowerCase()))
-                return -1;
-              else if (!a.name
-                      .toLowerCase()
-                      .startsWith(sortString.toLowerCase()) &&
-                  b.name.toLowerCase().startsWith(sortString.toLowerCase()))
-                return 1;
-              else
-                return a.name.toLowerCase().compareTo(b.name.toLowerCase());
-            }),
+        ..sort((a, b) {
+          if (a.name.toLowerCase().startsWith(sortString.toLowerCase()) &&
+              !b.name.toLowerCase().startsWith(sortString.toLowerCase())) {
+            return -1;
+          } else {
+            if (!a.name.toLowerCase().startsWith(sortString.toLowerCase()) &&
+                b.name.toLowerCase().startsWith(sortString.toLowerCase()))
+              return 1;
+            else
+              return a.name.toLowerCase().compareTo(b.name.toLowerCase());
+          }
+        }),
     );
   }
 }

@@ -12,10 +12,7 @@ class SnapshotLoadingWidget extends StatelessWidget {
     return (!loadingSnapshot.hasData ||
             loadingSnapshot.data == null ||
             loadingSnapshot.data == false)
-        ? Container(
-            width: 0.0,
-            height: 0.0,
-          )
+        ? Container(width: 0.0, height: 0.0)
         : Loading();
   }
 }

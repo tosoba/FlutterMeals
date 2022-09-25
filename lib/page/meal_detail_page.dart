@@ -25,7 +25,7 @@ class MealDetailPage extends StatelessWidget {
             _getBackground(),
             _getGradient(),
             _getContent(context),
-            _getToolbar(context),
+            _getToolbar(context)
           ],
         ),
       ),
@@ -37,10 +37,10 @@ class MealDetailPage extends StatelessWidget {
       child: CachedNetworkImage(
         imageUrl: meal.thumbnailUrl,
         fit: BoxFit.cover,
-        placeholder: ShimmerExpandBox(),
+        placeholder: (context, url) => ShimmerExpandBox(),
         fadeInDuration: Duration(milliseconds: 300),
         fadeOutDuration: Duration(milliseconds: 500),
-        errorWidget: Icon(Icons.error),
+        errorWidget: (context, url, error) => Icon(Icons.error),
         height: 300.0,
       ),
       constraints: BoxConstraints.expand(height: 295.0),
@@ -68,32 +68,25 @@ class MealDetailPage extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.fromLTRB(0.0, 72.0, 0.0, 32.0),
         children: <Widget>[
-          MealSummary(
-            meal,
-            horizontal: false,
-          ),
-          BackdropFilter(
-            filter: ImageFilter.blur(
-              sigmaX: 10.0,
-              sigmaY: 10.0,
-            ),
-            child: Container(
-              child: Padding(
-                padding: EdgeInsets.all(20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      "INSTRUCTIONS",
-                      style: Style.headerTextStyleBlack,
-                    ),
-                    Separator(
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    Text(meal.instructions ?? "",
-                        style: Style.commonTextStyleBlack),
-                  ],
-                ),
+          MealSummary(meal, horizontal: false),
+          Container(
+            child: Padding(
+              padding: EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    "INSTRUCTIONS",
+                    style: Style.headerTextStyleBlack,
+                  ),
+                  Separator(
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  Text(
+                    meal.instructions ?? "",
+                    style: Style.commonTextStyleBlack,
+                  ),
+                ],
               ),
             ),
           ),
@@ -106,30 +99,27 @@ class MealDetailPage extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
       child: Material(
-          color: Colors.transparent,
-          child: Ink(
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.white),
-              color: Theme.of(context).primaryColor.withOpacity(.85),
-              shape: BoxShape.circle,
+        color: Colors.transparent,
+        child: Ink(
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.white),
+            color: Theme.of(context).primaryColor.withOpacity(.85),
+            shape: BoxShape.circle,
+          ),
+          child: InkWell(
+            //This keeps the splash effect within the circle
+            borderRadius: BorderRadius.circular(1000.0),
+            //Something large to ensure a circle
+            onTap: () {
+              Navigator.maybePop(context);
+            },
+            child: Padding(
+              padding: EdgeInsets.all(5.0),
+              child: Icon(Icons.arrow_back, size: 30.0, color: Colors.white),
             ),
-            child: InkWell(
-              //This keeps the splash effect within the circle
-              borderRadius: BorderRadius.circular(1000.0),
-              //Something large to ensure a circle
-              onTap: () {
-                Navigator.maybePop(context);
-              },
-              child: Padding(
-                padding: EdgeInsets.all(5.0),
-                child: Icon(
-                  Icons.arrow_back,
-                  size: 30.0,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          )),
+          ),
+        ),
+      ),
     );
   }
 }

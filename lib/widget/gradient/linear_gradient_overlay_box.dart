@@ -5,10 +5,11 @@ class LinearGradientOverlayBox extends StatelessWidget {
   final FractionalOffset endOffset;
   final List<Color> colors;
 
-  LinearGradientOverlayBox(
-      {this.beginOffset: FractionalOffset.bottomCenter,
-      this.endOffset: FractionalOffset.topCenter,
-      @required this.colors});
+  LinearGradientOverlayBox({
+    this.beginOffset: FractionalOffset.bottomCenter,
+    this.endOffset: FractionalOffset.topCenter,
+    @required this.colors,
+  });
 
   @override
   Widget build(BuildContext context) {

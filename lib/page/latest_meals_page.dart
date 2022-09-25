@@ -26,10 +26,13 @@ class LatestMealsPage extends StatelessWidget {
             bloc.selectedMealSink.add(meal);
           },
           items: snapshot.data
-              .map((meal) => TransformPageModel(
+              .map(
+                (meal) => TransformPageModel(
                   title: meal.name,
                   category: meal.category,
-                  imageUrl: meal.thumbnailUrl))
+                  imageUrl: meal.thumbnailUrl,
+                ),
+              )
               .toList(),
         ));
       },

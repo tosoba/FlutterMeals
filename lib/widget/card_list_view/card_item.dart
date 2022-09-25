@@ -22,20 +22,18 @@ class CardListViewItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final image = CachedNetworkImage(
       fit: BoxFit.scaleDown,
-      placeholder: ShimmerExpandBox(),
+      placeholder: (context, url) => ShimmerExpandBox(),
       fadeOutDuration: Duration(milliseconds: 500),
       imageUrl: model.imageUrl,
-      errorWidget: Icon(Icons.error),
+      errorWidget: (context, url, error) => Icon(Icons.error),
       fadeInDuration: Duration(milliseconds: 300),
     );
 
     final imageOverlayGradient = LinearGradientOverlayBox(
-        beginOffset: FractionalOffset.bottomCenter,
-        endOffset: FractionalOffset.center,
-        colors: [
-          Color(0xFF606060),
-          Color(0x00606060),
-        ]);
+      beginOffset: FractionalOffset.bottomCenter,
+      endOffset: FractionalOffset.center,
+      colors: [Color(0xFF606060), Color(0x00606060)],
+    );
 
     final text = Positioned(
       bottom: 25.0,
@@ -48,7 +46,7 @@ class CardListViewItem extends StatelessWidget {
             model.name,
             style: Theme.of(context)
                 .textTheme
-                .title
+                .headline4
                 .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
           ),

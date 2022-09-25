@@ -13,9 +13,7 @@ import 'package:flutter_meals/widget/sorted_meal_list/sorted_meal_list.dart';
 
 class SearchPage extends StatefulWidget {
   @override
-  SearchPageState createState() {
-    return SearchPageState();
-  }
+  SearchPageState createState() => SearchPageState();
 }
 
 class SearchPageState extends State<SearchPage> {
@@ -93,7 +91,8 @@ class SearchPageState extends State<SearchPage> {
                         }),
                     StreamBuilder(
                       stream: StreamGroup.merge(
-                          [childBloc.loadingStream, searchBloc.loadingStream]),
+                        [childBloc.loadingStream, searchBloc.loadingStream],
+                      ),
                       builder: (context, AsyncSnapshot<bool> loadingSnapshot) {
                         return SnapshotLoadingWidget(
                           loadingSnapshot: loadingSnapshot,

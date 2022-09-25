@@ -7,8 +7,11 @@ import 'package:flutter_meals/widget/transform_page/transform_page_model.dart';
 import 'package:meta/meta.dart';
 
 class TransformPageItem extends StatelessWidget {
-  TransformPageItem(
-      {@required this.item, @required this.pageVisibility, this.onTap});
+  TransformPageItem({
+    @required this.item,
+    @required this.pageVisibility,
+    this.onTap,
+  });
 
   final TransformPageModel item;
   final PageVisibility pageVisibility;
@@ -20,16 +23,11 @@ class TransformPageItem extends StatelessWidget {
     @required Widget child,
   }) {
     final double xTranslation = pageVisibility.pagePosition * translationFactor;
-
     return Opacity(
       opacity: pageVisibility.visibleFraction,
       child: Transform(
         alignment: FractionalOffset.topLeft,
-        transform: Matrix4.translationValues(
-          xTranslation,
-          0.0,
-          0.0,
-        ),
+        transform: Matrix4.translationValues(xTranslation, 0.0, 0.0),
         child: child,
       ),
     );
@@ -57,7 +55,7 @@ class TransformPageItem extends StatelessWidget {
         padding: const EdgeInsets.only(top: 16.0),
         child: Text(
           item.title,
-          style: textTheme.title
+          style: textTheme.headline2
               .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
           textAlign: TextAlign.center,
         ),
@@ -70,10 +68,7 @@ class TransformPageItem extends StatelessWidget {
       right: 32.0,
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: [
-          categoryText,
-          titleText,
-        ],
+        children: [categoryText, titleText],
       ),
     );
   }
@@ -86,25 +81,19 @@ class TransformPageItem extends StatelessWidget {
         0.5 + (pageVisibility.pagePosition / 3),
         0.5,
       ),
-      placeholder: ShimmerExpandBox(),
+      placeholder: (context, url) => ShimmerExpandBox(),
       fadeOutDuration: Duration(milliseconds: 500),
       imageUrl: item.imageUrl,
-      errorWidget: Icon(Icons.error),
+      errorWidget: (context, url, error) => Icon(Icons.error),
       fadeInDuration: Duration(milliseconds: 300),
     );
 
     final imageOverlayGradient = LinearGradientOverlayBox(
-      colors: [
-        Color(0xFF000000),
-        Color(0x00000000),
-      ],
+      colors: [Color(0xFF000000), Color(0x00000000)],
     );
 
     final widget = Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: 16.0,
-        horizontal: 8.0,
-      ),
+      padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
       child: Material(
         elevation: 4.0,
         borderRadius: BorderRadius.circular(8.0),
@@ -121,9 +110,6 @@ class TransformPageItem extends StatelessWidget {
 
     return onTap == null
         ? widget
-        : GestureDetector(
-            child: widget,
-            onTap: onTap,
-          );
+        : GestureDetector(child: widget, onTap: onTap);
   }
 }
